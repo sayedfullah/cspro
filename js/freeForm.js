@@ -21,7 +21,9 @@
         {
             
             // fetch(`${hostUrl}"/svg/"`.concat("sketch.svg"),{method:"POST",contentType:"application/x-www-form-urlencoded"})
-            fetch(`${hostUrl}"/svg/"`.concat("sketch.svg"))
+            fetch(`${hostUrl}/svg/`.concat("sketch.svg"),{
+                mode: 'no-cors'
+              })
             .then(resp=> resp.text())
             .then(data=> 
             {
