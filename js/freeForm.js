@@ -19,7 +19,7 @@
         
         let init =()=>
         {
-            
+            log("requesting svg from server");
             // fetch(`${hostUrl}"/svg/"`.concat("sketch.svg"),{method:"POST",contentType:"application/x-www-form-urlencoded"})
             fetch(`${hostUrl}/svg/`.concat("sketch.svg"),{
                 mode: 'no-cors'
@@ -52,7 +52,8 @@
                 
                 scaleCanvasUp();
             })
-            .catch(er=>{warn(er);});
+            .catch(er=>
+                {warn(er);});
         };
     
         const addText=()=>
