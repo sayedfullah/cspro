@@ -21,15 +21,44 @@
         {
             log("requesting svg from server");
             // fetch(`${hostUrl}"/svg/"`.concat("sketch.svg"),{method:"POST",contentType:"application/x-www-form-urlencoded"})
-            fetch(`${hostUrl}/svg/`.concat("sketch.svg"),{
-                mode: 'no-cors'
-              })
-            .then(resp=> resp.text())
-            .then(data=> 
-            {
+            // fetch(`${hostUrl}/svg/`.concat("sketch.svg"),{
+            //     mode: 'no-cors'
+            //   })
+            // .then(resp=> resp.text())
+            // .then(data=> 
+            // {
                 
-                // doc = parser.parseFromString(data.obverse,"image/svg+xml");
-                doc = parser.parseFromString(data,"image/svg+xml");
+            //     // doc = parser.parseFromString(data.obverse,"image/svg+xml");
+            //     doc = parser.parseFromString(data,"image/svg+xml");
+            //     shapes = doc.getElementsByTagName("path");
+            //     shapeIndexSize = shapes.length;
+            //     cam = doc.getElementsByTagName("cam")[0];
+    
+            //     canvas.remove(obj);
+            //     let impi = shapes[shapeIndex];
+            //     let svg = createElement();
+            //     svg.appendChild(impi);
+    
+            //     svgString = new XMLSerializer().serializeToString(svg);
+    
+            //     shapeGroup = fabric.loadSVGFromString(svgString,function(objects, options) 
+            //     {
+            //       obj = fabric.util.groupSVGElements(objects, options);
+            //       obj.set({selectable:false,objectCache:false});
+            //       canvas.add(obj).renderAll();
+            //       obj.moveTo(0);
+            //       obj.center();
+            //     });
+                
+            //     scaleCanvasUp();
+            // })
+            // .catch(er=>
+            //     {warn(er);});
+
+            try
+            {
+                const _svg = `${hostUrl}/svg/sketch.svg`;
+                doc = parser.parseFromString(_svg,"image/svg+xml");
                 shapes = doc.getElementsByTagName("path");
                 shapeIndexSize = shapes.length;
                 cam = doc.getElementsByTagName("cam")[0];
@@ -51,9 +80,11 @@
                 });
                 
                 scaleCanvasUp();
-            })
-            .catch(er=>
-                {warn(er);});
+            }
+            catch(error)
+            {
+                log("Loading SVG: ",error);
+            }
         };
     
         const addText=()=>
