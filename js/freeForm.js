@@ -26,7 +26,6 @@
             .then(resp=> resp.text())
             .then(data=> 
             {
-                log("SVG Data: ",data);
                 // doc = parser.parseFromString(data.obverse,"image/svg+xml");
                 doc = parser.parseFromString(data,"image/svg+xml");
                 shapes = doc.getElementsByTagName("path");
@@ -166,8 +165,8 @@
         //------------------------HELPER FUNCTIONS--------------------------------->
         const scaleCanvasUp=()=>
         {
-            canvas.setWidth(450);
-            canvas.setHeight(450);
+            canvas.setWidth(300);
+            canvas.setHeight(300);
             canvas.zoomToPoint(new fabric.Point(225, 225), 3);
         };
         
