@@ -21,9 +21,8 @@
         {
             log("Requesting SVG from server!");
             // fetch(`${hostUrl}"/svg/"`.concat("sketch.svg"),{method:"POST",contentType:"application/x-www-form-urlencoded"})
-            fetch(`${hostUrl}/svg/sketch.svg`,{
-                mode: 'no-cors'
-              })
+            // fetch(`${hostUrl}/svg/sketch.svg`,{ mode: 'no-cors' })
+            fetch(`https://www.oroafrica.uat2.dev01.cslweb.uk//design/themes/oroafrica/svg/sketch.txt`,{ mode: 'no-cors' })
             .then(resp=> resp.text())
             .then(data=> 
             {
