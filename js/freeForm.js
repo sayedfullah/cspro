@@ -1,7 +1,7 @@
 (()=>
     {  
         const { warn, log, debug } = console;
-        const hostUrl = "https://sayedfullah.github.io/pronto/";
+        const hostUrl = "https://sayedfullah.github.io/cspro";
         var doc, svgString;
         const parser = new DOMParser();
     
@@ -92,15 +92,15 @@
                             cornerBackgroundColor: '#efefef',
                             cornerPadding:7
                     }
-                    ,tl:{icon: '../images/ico/delete.svg',cornerColor:"red"}
-                    ,tr:{icon: '../images/ico/scale.svg'}
+                    ,tl:{icon: `${hostUrl}/ico/delete.svg`,cornerColor:"red"}
+                    ,tr:{icon: `${hostUrl}/ico/scale.svg`}
                     ,ml:{}
                     ,mr:{}
                     ,mt:{}
-                    ,mb:{icon: '../images/ico/align.svg'}
-                    ,bl:{icon: "../images/ico/palette.svg"}
-                    ,br:{icon:"../images/ico/font.svg"}
-                    ,mtr:{icon: '../images/ico/rotate.svg'}
+                    ,mb:{icon: `${hostUrl}/ico/align.svg`}
+                    ,bl:{icon: `${hostUrl}/ico/palette.svg`}
+                    ,br:{icon:`${hostUrl}/ico/font.svg`}
+                    ,mtr:{icon: `${hostUrl}/ico/rotate.svg`}
             });
     
             fabric.Canvas.prototype.customiseControls({
