@@ -21,12 +21,13 @@
         {
             log("Requesting SVG from server!");
             // fetch(`${hostUrl}"/svg/"`.concat("sketch.svg"),{method:"POST",contentType:"application/x-www-form-urlencoded"})
-            // fetch(`${hostUrl}/svg/sketch.svg`,{ mode: 'no-cors' })
+            // fetch("https://sayedfullah.github.io/cspro/svg/sketch.svg")
             fetch(`https://www.oroafrica.uat2.dev01.cslweb.uk//design/themes/oroafrica/svg/sketch.txt`,{ mode: 'no-cors' })
             .then(resp=> resp.text())
             .then(data=> 
             {
                 // doc = parser.parseFromString(data.obverse,"image/svg+xml");
+                log(" ===================== ",data)
                 doc = parser.parseFromString(data,"image/svg+xml");
                 shapes = doc.getElementsByTagName("path");
                 shapeIndexSize = shapes.length;
@@ -165,9 +166,10 @@
         //------------------------HELPER FUNCTIONS--------------------------------->
         const scaleCanvasUp=()=>
         {
-            canvas.setWidth(300);
-            canvas.setHeight(300);
+            canvas.setWidth(450);
+            canvas.setHeight(450);
             canvas.zoomToPoint(new fabric.Point(225, 225), 3);
+            // canvas.zoomToPoint(new fabric.Point(150, 150), 3);
         };
         
         const scaleCanvasDown=()=>

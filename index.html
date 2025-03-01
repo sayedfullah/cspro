@@ -4,22 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <title>cprism</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div class="host p-0 m-0 border overflow-hidden position-relative" id="svgHost">
-        <div style="position:absolute;right:0;bottom:0;z-index:10000000" th:if="${product.library == 'FREE FORM'} ">
-            <button type="button" class="btn btn-sm btn-outline-secondary m-1 canvasBtn"><i
-                    class="fas fa-chevron-left fa-lg"></i></button>
-            <button type="button" class="btn btn-sm btn-outline-secondary m-1 canvasBtn"><i
-                    class="fas fa-keyboard fa-lg"></i></button>
-            <button type="button" class="btn btn-sm btn-outline-secondary m-1 canvasBtn"><i
-                    class="fas fa-chevron-right fa-lg"></i></button>
-        </div>
+    <div class="h-screen w-screen flex items-center justify-center  ">
+        <div class="host p-0 m-0 border overflow-hidden relative" id="svgHost">
+            <div style="position:absolute;right:0;bottom:0;z-index:10000000">
+                <button
+                    class="px-4 py-1 border border-blue-500 text-blue-500 rounded hover:bg-blue-500 hover:text-white transition canvasBtn">&lt;</button>
+                <button
+                    class="px-4 py-1 border border-blue-500 text-blue-500 rounded hover:bg-blue-500 hover:text-white canvasBtn">🎞</button>
+                <button
+                    class="px-4 py-1 border border-blue-500 text-blue-500 rounded hover:bg-blue-500 hover:text-white canvasBtn">&gt;</button>
+            </div>
 
-        <canvas id="canvas" class="border">canvas not supported</canvas>
+            <canvas id="canvas" class="border">canvas not supported</canvas>
+        </div>
     </div>
 </body>
+
+<script src="./js/customiseControls.js"></script>
+<script src="./js/fabric.js"></script>
+<script src="./js/freeForm.js"></script>
 
 </html>
