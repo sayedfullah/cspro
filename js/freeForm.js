@@ -255,7 +255,7 @@
             tmpCanvas.setAttribute("height",dim);
             let ctx = tmpCanvas.getContext('2d');
                 
-            
+            log("****** download payload ********",canvas.toSVG())
             var im = new Image();
             im.src = "data:image/svg+xml,".concat(encodeURIComponent(canvas.toSVG()));
             //draw 
