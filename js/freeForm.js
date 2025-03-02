@@ -306,7 +306,7 @@
                         img.filters.push(filter,bw);
                         img.applyFilters();
                         canvas.add(img).renderAll();
-                        img.moveTo(0);
+                        // img.moveTo(0);
                         img.center();
                         canvas.setActiveObject(img);
                         canvas.renderAll();
