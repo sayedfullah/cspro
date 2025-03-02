@@ -47,6 +47,7 @@
                   canvas.add(obj).renderAll();
                   obj.moveTo(0);
                   obj.center();
+                  canvas.sendToBack(obj);
                 });
                 
                 scaleCanvasUp();
