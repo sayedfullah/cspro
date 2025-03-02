@@ -238,7 +238,7 @@
             shapex.setAttribute("height","300");
             shapex.setAttribute("xmlns:mingh","http://www.minghworld.com");
             
-            shapex.removeChild(docx.getElementsByTagName("rect")[0]);
+            // shapex.removeChild(docx.getElementsByTagName("rect")[0]);
             shapex.appendChild(cam);
            
             return new XMLSerializer().serializeToString(docx);
