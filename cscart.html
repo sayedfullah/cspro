@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <title>cscart</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div style="display: flex; gap: 20px; align-items: center;" id="svgHost">
+        <div style="flex: 1; display: flex; justify-content: center;">
+            <canvas id="canvas" width="300" height="300"
+                style="max-width: 450px; width: 100%; border: 1px solid #000;"></canvas>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+            <div style="display: flex; gap: 5px;">
+                <button class="canvasBtn"
+                    style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer;">&lt;</button>
+                <button class="canvasBtn"
+                    style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer;">Text</button>
+                <button class="canvasBtn"
+                    style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer;">&gt;</button>
+            </div>
+            <label
+                style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer; display: inline-block;">
+                Upload
+                <input type="file" style="display: none;">
+            </label>
+            <button
+                style="padding: 8px 12px; border: none; background: #28a745; color: white; cursor: pointer;">Save</button>
+            <button
+                style="padding: 8px 12px; border: none; background: #dc3545; color: white; cursor: pointer;">Download</button>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/fabric.js"></script>
+    <script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/customiseControls.js"></script>
+    <script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/freeForm.js" defer=""></script>
+</body>
+
+</html>

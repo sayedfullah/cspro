@@ -250,7 +250,7 @@
     canvas.renderAll(); 
             let dim = 2000;
             var tmpCanvas = document.createElement('canvas');
-            tmpCanvas.id="canvas";
+            tmpCanvas.id="tmpcanvas";
             tmpCanvas.setAttribute("width",dim);
             tmpCanvas.setAttribute("height",dim);
             let ctx = tmpCanvas.getContext('2d');
