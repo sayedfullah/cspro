@@ -326,30 +326,50 @@
         {
             $(document).on("click","#_order",()=> 
             { 
-                $("#_order").find("span:first").addClass("spinner-border spinner-border-sm");
-                doc = parser.parseFromString(getCanvas(),"image/svg+xml");
                 const svgExport = svgDown(doc);
-                let f = new FormData();
-                f.append("schema",document.title); 
-                f.append("svg",svgExport);
-                f.append("sketch",$("#_imageFile").prop("files")[0]);
+                log(" +++++++++++++ ",svgExport);
+                const blob = new Blob([svgString], { type: "image/svg+xml" });
     
-                var requestOptions = 
-                {
-                   method: 'POST'
-                  ,contentType: "application/x-www-form-urlencoded;charset=UTF-8" 
-                  ,body: f
-                };
+                // Create an object URL
+                const url = URL.createObjectURL(blob);
+                
+                // Create a temporary anchor element
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "sampleSvg.svg";
+                
+                // Append to the document, trigger download, and remove the element
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                // Revoke the object URL
+                URL.revokeObjectURL(url);
+
+                // $("#_order").find("span:first").addClass("spinner-border spinner-border-sm");
+                // doc = parser.parseFromString(getCanvas(),"image/svg+xml");
+                // const svgExport = svgDown(doc);
+                // let f = new FormData();
+                // f.append("schema",document.title); 
+                // f.append("svg",svgExport);
+                // f.append("sketch",$("#_imageFile").prop("files")[0]);
     
-                fetch("/saveSvgSketch/".concat(document.title),requestOptions)
-                    .then(resp=> resp.json())
-                    .then(d=> {$("#_order").find("span:first").removeClass("spinner-border spinner-border-sm");
-                                $("#thd").html(`<b class='text-white'>${d.schema}</b>`);
-                                $("#tbd").html(`<i class='small'>${d.json}</i>`);$(".toast").toast("show");
-                                $("#_url").text(d.json);})
-                    .catch(er=> {$("#_order").find("span:first").removeClass("spinner-border spinner-border-sm");
-                                $("#thd").html(`<b class='text-white'>ERROR:</b>`);
-                                $("#tbd").html(`<i class='small'>${er}</i>`);$(".toast").toast("show");});
+                // var requestOptions = 
+                // {
+                //    method: 'POST'
+                //   ,contentType: "application/x-www-form-urlencoded;charset=UTF-8" 
+                //   ,body: f
+                // };
+    
+                // fetch("/saveSvgSketch/".concat(document.title),requestOptions)
+                //     .then(resp=> resp.json())
+                //     .then(d=> {$("#_order").find("span:first").removeClass("spinner-border spinner-border-sm");
+                //                 $("#thd").html(`<b class='text-white'>${d.schema}</b>`);
+                //                 $("#tbd").html(`<i class='small'>${d.json}</i>`);$(".toast").toast("show");
+                //                 $("#_url").text(d.json);})
+                //     .catch(er=> {$("#_order").find("span:first").removeClass("spinner-border spinner-border-sm");
+                //                 $("#thd").html(`<b class='text-white'>ERROR:</b>`);
+                //                 $("#tbd").html(`<i class='small'>${er}</i>`);$(".toast").toast("show");});
             });
         };
         
