@@ -27,7 +27,7 @@
             .then(data=> 
             {
                 // doc = parser.parseFromString(data.obverse,"image/svg+xml");
-                log(" ===================== ",data)
+                // log(" ===================== ",data)
                 doc = parser.parseFromString(data,"image/svg+xml");
                 shapes = doc.getElementsByTagName("path");
                 shapeIndexSize = shapes.length;
