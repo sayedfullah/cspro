@@ -36,6 +36,7 @@
                 canvas.remove(obj);
                 let impi = shapes[shapeIndex];
                 let svg = createElement();
+                //add svg children to new svg
                 svg.appendChild(impi);
     
                 svgString = new XMLSerializer().serializeToString(svg);
@@ -56,6 +57,44 @@
                 {warn(er);});
         };
     
+        let emojicons =()=>
+            {
+                log("Requesting SVG from server!");
+                // fetch(`${hostUrl}"/svg/"`.concat("sketch.svg"),{method:"POST",contentType:"application/x-www-form-urlencoded"})
+                // fetch("https://sayedfullah.github.io/cspro/svg/sketch.svg")
+                fetch(`https://www.oroafrica.uat2.dev01.cslweb.uk//design/themes/oroafrica/svg/emoji.txt`,{ mode: 'no-cors' })
+                .then(resp=> resp.text())
+                .then(data=> 
+                {
+                    // doc = parser.parseFromString(data.obverse,"image/svg+xml");
+                    // log(" ===================== ",data)
+                    doc = parser.parseFromString(data,"image/svg+xml");
+                    shapes = doc.getElementsByTagName("path");
+                    const emojiLength = shapes.length;
+        
+                    canvas.remove(obj);
+                    let impi = shapes[shapeIndex];
+                    let svg = createElement();
+                    svg.appendChild(impi);
+        
+                    svgString = new XMLSerializer().serializeToString(svg);
+        
+                    shapeGroup = fabric.loadSVGFromString(svgString,function(objects, options) 
+                    {
+                      obj = fabric.util.groupSVGElements(objects, options);
+                      obj.set({selectable:true,objectCache:false});
+                      canvas.add(obj).renderAll();
+                    //   obj.moveTo(0);
+                      obj.center();
+                    //   canvas.sendToBack(obj);
+                    });
+                    
+                    // scaleCanvasUp();
+                })
+                .catch(er=>
+                    {warn(er);});
+            };
+
         const addText=()=>
         {
             let props = 
@@ -76,6 +115,25 @@
             canvas.renderAll();
         };
     
+        // const addSymbol=()=>
+        //     {
+        //         let props = 
+        //         {
+        //             fill:"#00f"
+        //             ,originX:"center"
+        //             ,originY:"center"
+        //             ,left:225
+        //             ,objectCaching:false
+        //             ,textAlign:"center"
+        //             ,top:180
+        //             ,fontSize:10
+        //             ,padding:50
+        //             ,fontFamily:"z_lucida"
+        //         };
+        //         var s = new fabric.IText("♥",props);
+        //         canvas.add(s);
+        //         canvas.renderAll();
+        //     };
         const actionButtons=()=>
         {
             let g = $(".canvasBtn").toArray();
@@ -201,7 +259,7 @@
         
         const textColour=(a)=>
         {
-            return ["#f00","#00f"][a];
+            return ["#00","#B4B4B4"][a];
         };
         
         let createElement=()=>
@@ -404,6 +462,29 @@
             });
         };
         
+        const addHrtSymbol=()=>
+        {
+            $(document).on("click","#_heart",()=> 
+            { 
+                let props = 
+                {
+                    fill:"#00f"
+                    ,originX:"center"
+                    ,originY:"center"
+                    ,left:225
+                    ,objectCaching:false
+                    ,textAlign:"center"
+                    ,top:180
+                    ,fontSize:10
+                    ,padding:50
+                    ,fontFamily:"z_lucida"
+                };
+                var s = new fabric.IText("♥",props);
+                canvas.add(s);
+                canvas.renderAll();
+            });
+        };
+
         const render=(()=>
         {
             init();
@@ -413,6 +494,7 @@
             serialize();
             downloadImage();
             browseFile();
+            addHrtSymbol();
         })();
         
     })();
