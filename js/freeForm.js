@@ -245,31 +245,61 @@
             return new XMLSerializer().serializeToString(docx);
         };
         
-        const downloadImage=()=> $(document).on("click","#_share",()=>
-        {
-            canvas.discardActiveObject();
-    canvas.renderAll(); 
-            let dim = 2000;
-            var tmpCanvas = document.createElement('canvas');
-            tmpCanvas.id="tmpcanvas";
-            tmpCanvas.setAttribute("width",dim);
-            tmpCanvas.setAttribute("height",dim);
-            let ctx = tmpCanvas.getContext('2d');
+        // const downloadImage=()=> $(document).on("click","#_share",()=>
+        // {
+        //     canvas.discardActiveObject();
+        //     canvas.renderAll(); 
+        //     let dim = 2000;
+        //     var tmpCanvas = document.createElement('canvas');
+        //     tmpCanvas.id="tmpcanvas";
+        //     tmpCanvas.setAttribute("width",dim);
+        //     tmpCanvas.setAttribute("height",dim);
+        //     let ctx = tmpCanvas.getContext('2d');
                 
-            log("****** download payload ********",canvas.toSVG())
-            var im = new Image();
-            im.src = "data:image/svg+xml,".concat(encodeURIComponent(canvas.toSVG()));
-            //draw 
-            im.onload = ()=>{ctx.drawImage(im, 0, 0, dim*window.devicePixelRatio, dim*window.devicePixelRatio);}; 
+        //     log("****** download payload ********",canvas.toSVG())
+        //     var im = new Image();
+        //     im.src = "data:image/svg+xml,".concat(encodeURIComponent(canvas.toSVG()));
+        //     //draw 
+        //     im.onload = ()=>{ctx.drawImage(im, 0, 0, dim*window.devicePixelRatio, dim*window.devicePixelRatio);}; 
     
-            $(document).ready(()=>
-            {
-                let download = document.createElement('a');
-                download.href = tmpCanvas.toDataURL("image/png",1.0);
-                download.setAttribute('download', document.title.concat(".png"));
-                download.click();
+        //     $(document).ready(()=>
+        //     {
+        //         let download = document.createElement('a');
+        //         download.href = tmpCanvas.toDataURL("image/png",1.0);
+        //         download.setAttribute('download', document.title.concat(".png"));
+        //         download.click();
+        //     });
+        // });
+        const downloadImage = () => {
+            $(document).on("click", "#_share", () => {
+                canvas.discardActiveObject();
+                canvas.renderAll();
+        
+                let dim = 2000; // Image resolution
+                let tmpCanvas = document.createElement("canvas");
+                tmpCanvas.width = dim;
+                tmpCanvas.height = dim;
+                let ctx = tmpCanvas.getContext("2d");
+        
+                let svgData = canvas.toSVG();
+                let img = new Image();
+        
+                img.onload = () => {
+                    ctx.drawImage(img, 0, 0, dim, dim);
+        
+                    // Now trigger the download
+                    let download = document.createElement("a");
+                    download.href = tmpCanvas.toDataURL("image/png", 1.0);
+                    download.download = document.title + ".png";
+                    document.body.appendChild(download);
+                    download.click();
+                    document.body.removeChild(download);
+                };
+        
+                // Encode SVG to avoid parsing issues
+                img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgData);
             });
-        });
+        };
         
         const browseFile=()=>
         {
