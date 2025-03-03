@@ -115,25 +115,7 @@
             canvas.renderAll();
         };
     
-        // const addSymbol=()=>
-        //     {
-        //         let props = 
-        //         {
-        //             fill:"#00f"
-        //             ,originX:"center"
-        //             ,originY:"center"
-        //             ,left:225
-        //             ,objectCaching:false
-        //             ,textAlign:"center"
-        //             ,top:180
-        //             ,fontSize:10
-        //             ,padding:50
-        //             ,fontFamily:"z_lucida"
-        //         };
-        //         var s = new fabric.IText("♥",props);
-        //         canvas.add(s);
-        //         canvas.renderAll();
-        //     };
+      
         const actionButtons=()=>
         {
             let g = $(".canvasBtn").toArray();
@@ -259,7 +241,7 @@
         
         const textColour=(a)=>
         {
-            return ["#00","#B4B4B4"][a];
+            return ["#000","#646464"][a];
         };
         
         let createElement=()=>
@@ -480,6 +462,7 @@
                     ,fontFamily:"z_lucida"
                 };
                 var s = new fabric.IText("♥",props);
+                //s.enableEditing(false);
                 canvas.add(s);
                 canvas.renderAll();
             });
