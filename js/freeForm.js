@@ -2,6 +2,7 @@
     {  
         const { warn, log, debug } = console;
         const hostUrl = "https://sayedfullah.github.io/cspro";
+        const parentUrl = "https://sayedfullah.github.io/cspro";//https://www.oroafrica.uat2.dev01.cslweb.uk/images/prism/svg/sketch.txt
         var doc, svgString;
         const parser = new DOMParser();
     
@@ -22,7 +23,7 @@
             log("Requesting SVG from server!");
             // fetch(`${hostUrl}"/svg/"`.concat("sketch.svg"),{method:"POST",contentType:"application/x-www-form-urlencoded"})
             // fetch("https://sayedfullah.github.io/cspro/svg/sketch.svg")
-            fetch(`https://www.oroafrica.uat2.dev01.cslweb.uk//design/themes/oroafrica/svg/sketch.txt`,{ mode: 'no-cors' })
+            fetch(`/svg/sketch.svg`,{ mode: 'no-cors' })
             .then(resp=> resp.text())
             .then(data=> 
             {
@@ -62,7 +63,8 @@
                 log("Requesting SVG from server!");
                 // fetch(`${hostUrl}"/svg/"`.concat("sketch.svg"),{method:"POST",contentType:"application/x-www-form-urlencoded"})
                 // fetch("https://sayedfullah.github.io/cspro/svg/sketch.svg")
-                fetch(`https://www.oroafrica.uat2.dev01.cslweb.uk//design/themes/oroafrica/svg/emoji.txt`,{ mode: 'no-cors' })
+                // fetch(`https://www.oroafrica.uat2.dev01.cslweb.uk//design/themes/oroafrica/svg/emoji.txt`,{ mode: 'no-cors' })
+                fetch(`http:127.0.0.1/svg/sketch.svg`,{ mode: 'no-cors' })
                 .then(resp=> resp.text())
                 .then(data=> 
                 {
@@ -397,9 +399,15 @@
         {
             $(document).on("click","#_order",()=> 
             { 
-                const svgExport = svgDown(doc);
+                log("********** ", getCanvas(doc));
+                const x = parser.parseFromString(getCanvas(doc),"image/svg+xml");
+                // let svg3 = createElement();
+                //     svg3.appendChild(x);
+                const svgExport = svgDown(x);
+                // const svgExport = getCanvas(doc);
                 log(" +++++++++++++ ",svgExport);
-                const blob = new Blob([svgString], { type: "image/svg+xml" });
+                const blob = new Blob([svgExport], { type: "image/svg+xml" });
+                // const blob = new Blob([svgString], { type: "image/svg+xml" });
     
                 // Create an object URL
                 const url = URL.createObjectURL(blob);
@@ -417,7 +425,7 @@
                 // Revoke the object URL
                 URL.revokeObjectURL(url);
 
-                // $("#_order").find("span:first").addClass("spinner-border spinner-border-sm");
+                $("#_order").find("span:first").addClass("spinner-border spinner-border-sm");
                 // doc = parser.parseFromString(getCanvas(),"image/svg+xml");
                 // const svgExport = svgDown(doc);
                 // let f = new FormData();

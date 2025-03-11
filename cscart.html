@@ -11,9 +11,9 @@
 </head>
 
 <body>
-    <div style="display: flex; gap: 20px; align-items: center;" id="svgHost">
-        <div style="flex: 1; display: flex; justify-content: center;">
-            <canvas id="canvas" width="300" height="300"
+    <div style="display: flex; gap: 20px; align-items: center;flex-direction:column;" class="mt-10" id="svgHost">
+        <div style="flex: 1; display: flex;  justify-content: center;">
+            <canvas id="canvas" width="450" height="450"
                 style="max-width: 450px; width: 100%; border: 1px solid #000;"></canvas>
         </div>
         <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
@@ -24,23 +24,27 @@
                     style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer;">Text</button>
                 <button class="canvasBtn"
                     style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer;">&gt;</button>
+                <button class="" id="_heart"
+                    style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer;">♥</button>
             </div>
-            <label
-                style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer; display: inline-block;">
-                Upload
-                <input type="file" style="display: none;">
-            </label>
-            <button
-                style="padding: 8px 12px; border: none; background: #28a745; color: white; cursor: pointer;">Save</button>
-            <button
-                style="padding: 8px 12px; border: none; background: #dc3545; color: white; cursor: pointer;">Download</button>
+            <div class="flex gap-3 rounded">
+                <label
+                    style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer; display: inline-block;">
+                    Upload
+                    <input type="file" id="_imageFile" style="display: none;">
+                </label>
+                <button id="_order"
+                    style="padding: 8px 12px; border: none; background: #28a745; color: white; cursor: pointer;">SVG</button>
+                <button id="_share"
+                    style="padding: 8px 12px; border: none; background: #dc3545; color: white; cursor: pointer;">Download</button>
+            </div>
         </div>
     </div>
 
 
-    <script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/fabric.js"></script>
-    <script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/customiseControls.js"></script>
-    <script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/freeForm.js" defer=""></script>
+    <script type="text/javascript" src="./js/fabric.js"></script>
+    <script type="text/javascript" src="./js/customiseControls.js"></script>
+    <script type="text/javascript" src="./js/freeForm.js" defer=""></script>
 </body>
 
 </html>
