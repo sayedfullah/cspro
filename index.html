@@ -1,36 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <title>cprism</title>
-    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
-        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
-</head>
+<style>
+	@font-face {
+		font-family: 'hero';
+		src: url('/images/prism/fonts/z_hero.woff2') format('woff2');
+		font-weight: normal;
+		font-style: normal;
+	}
 
-<body>
-    <div class="h-screen w-screen flex items-center justify-center  ">
-        <div class="host p-0 m-0 border overflow-hidden relative" id="svgHost">
-            <canvas id="canvas" class="border">canvas not supported</canvas>
-        </div>
-        <div style="position:absolute;right:0;bottom:0;z-index:10000000">
-            <button
-                class="px-4 py-1 border border-blue-500 text-blue-500 rounded hover:bg-blue-500 hover:text-white transition canvasBtn">&lt;</button>
-            <button
-                class="px-4 py-1 border border-blue-500 text-blue-500 rounded hover:bg-blue-500 hover:text-white canvasBtn">🎞</button>
-            <button
-                class="px-4 py-1 border border-blue-500 text-blue-500 rounded hover:bg-blue-500 hover:text-white canvasBtn">&gt;</button>
-        </div>
+	@font-face {
+		font-family: 'corsiva';
+		src: url('/images/prism/fonts/z_corsiva.woff2') format('woff2');
+		font-weight: normal;
+		font-style: normal;
+	}
 
-        <canvas id="canvas" class="border">canvas not supported</canvas>
-    </div>
-    </div>
-</body>
+	@font-face {
+		font-family: 'boli';
+		src: url('/images/prism/fonts/z_boli.woff2') format('woff2');
+		font-weight: normal;
+		font-style: normal;
+	}
+</style>
+<div id="mainContainer" style="display:flex;flex-direction:column;width:300px;max-width:450px">
+	<div id="svgHost" style="border: 1px solid #dee2e6;border-radius:5px;max-width:450px;width:100%">
 
-<script src="./js/customiseControls.js"></script>
-<script src="./js/fabric.js"></script>
-<script src="./js/freeForm.js"></script>
+		<canvas id="canvas" style="border: 1px solid #dee2e6;width:300px;height:300px">canvas not supported</canvas>
+	</div>
+
+	<div style="border:1px solid #dee2e6;border-radius:5px;width:440px;padding:5px">
+		<div style="display: flex; flex-direction: row;justify-content:space-evenly;width:100%">
+			<button class="canvasBtn"
+				style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">
+				&lt;
+			</button>
+			<button class="canvasBtn"
+				style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">
+				text
+			</button>
+			<button class="canvasBtn"
+				style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">&gt;</button>
+			<button id="_heart"
+				style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">♥</button>
+			<button id="_order" class="fileBtn"
+				style="border: 1px solid #6c757d; background: transparent; color: #6c746d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;">
+				svg
+			</button>
+			<button id="_share" class="fileBtn"
+				style="border: 1px solid #6c757d; background: transparent; color: #6c346d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;">
+				image
+			</button>
+		</div>
+		<div style="display: flex; flex-direction: row;width:430px;margin-top:5px">
+			<input type="file"
+				style="display: block; border: 1px solid black; border-radius:0.25rem; padding:0.25rem;width:430px"
+				name="file" id="_imageFile">
+		</div>
+	</div>
+
+</div>
+<script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/fabric.js"></script>
+<script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/customiseControls.js"></script>
+<script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/freeForm.js" defer=""></script>
 
 </html>

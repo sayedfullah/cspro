@@ -5,7 +5,7 @@
         const blobUrl = "https://oroblob.blob.core.windows.net/cspro"
         var doc, svgString;
         const parser = new DOMParser();
-    
+        const version = "1.0.0";
         const canvasConfig = {backgroundColor:"#fff",width:"300",height:"300",objectCaching:false,hoverCursor:"pointer",enableRetinaScaling:true};
         const canvas = new fabric.Canvas("canvas",canvasConfig);
         var obj, shapeGroup;
@@ -20,8 +20,12 @@
         
         let init =()=>
         {
-            log("Requesting SVG from server!");
-            fetch(`/images/prism/svg/sketch.txt`,{ mode: 'no-cors' })
+            log("Requesting SVG from server! ", version);
+            // fetch(`/images/prism/svg/sketch.txt`,{ mode: 'no-cors' })
+            // fetch(`/images/prism/svg/sketch.txt`,{ mode: 'no-cors' })
+            const productElement = document.querySelector(".productId");
+            const _sourceSVG = (productElement !== null) ? productElement : "sketch";
+            fetch(`${blobUrl}/svg/${_sourceSVG}.svg`)
             .then(resp=> resp.text())
             .then(data=> 
             {
@@ -38,8 +42,6 @@
     
                 svgString = new XMLSerializer().serializeToString(svg);
 
-                log("svgString: ",svgString);
-                
                 shapeGroup = fabric.loadSVGFromString(svgString,function(objects, options) 
                 {
                   obj = fabric.util.groupSVGElements(objects, options);
@@ -81,8 +83,8 @@
         {
             let g = $(".canvasBtn").toArray();
             $(g[0]).click(()=>{shapeChangerLeft();init();});
-            $(g[1]).click(()=>  addText());
-            $(g[2]).click(()=>{shapeChangerRight();init();});
+            $(g[1]).click(()=>{shapeChangerRight();init();});
+            $(g[2]).click(()=>  addText());
         };
            
         const config=()=>
@@ -143,7 +145,6 @@
                     ,action: ()=>{
                         let s = canvas.getActiveObject();
                         alignCount = (alignCount > 2) ? 0 : alignCount;
-                        warn("aligncount: ",alignCount);
                         s.set({textAlign:textAlignment(alignCount)});
                         alignCount++;
                         canvas.discardActiveObject().renderAll();
@@ -202,7 +203,7 @@
         
         const textColour=(a)=>
         {
-            return ["#f00","#0f0"][a];
+            return ["#f00","#0f0","#646464"][a];
         };
         
         let createElement=()=>
@@ -325,7 +326,7 @@
         
         const fontChanger=(a)=> 
         {
-            return ["z_hero","z_corsiva","z_boli"][a];
+            return ["z_hero","z_corsiva","z_boli","z_swan","z_chaparrals","z_english"][a];
         };
         
         //------------------------END HELPER FUNCTIONS----------------------------->
