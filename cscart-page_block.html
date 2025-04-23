@@ -1,0 +1,96 @@
+<style>
+    @font-face {
+        font-family: 'z_hero';
+        src: url('/images/prism/fonts/z_hero.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'z_corsiva';
+        src: url('/images/prism/fonts/z_corsiva.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'z_boli';
+        src: url('/images/prism/fonts/z_boli.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'z_swan';
+        src: url('/images/prism/fonts/z_swan.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'z_english';
+        src: url('/images/prism/fonts/z_english.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'z_chaparrals';
+        src: url('/images/prism/fonts/z_chaparrals.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+    }
+</style>
+<div id="mainContainer" style="display:flex;flex-direction:column;width:300px;max-width:450px">
+    <div id="svgHost" style="border: 1px solid #dee2e6;border-radius:5px;max-width:450px;width:100%">
+
+        <canvas id="canvas" style="border: 1px solid #dee2e6;width:300px;height:300px">canvas not supported</canvas>
+    </div>
+
+    <div style="border:1px solid #dee2e6;border-radius:5px;width:440px;padding:5px">
+        <div style="display: flex; flex-direction: row;justify-content:space-evenly;width:100%">
+            <button class="canvasBtn"
+                style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">
+                &lt;
+            </button>
+            <button class="canvasBtn"
+                style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">&gt;</button>
+            <button class="canvasBtn"
+                style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">
+                Text
+            </button>
+
+            <button id="_heart"
+                style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">♥</button>
+            <button id="_order" class="fileBtn"
+                style="border: 1px solid #6c757d; background: transparent; color: #6c746d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;">
+                svg
+            </button>
+            <button id="_share" class="fileBtn"
+                style="border: 1px solid #6c757d; background: transparent; color: #6c346d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;">
+                image
+            </button>
+        </div>
+        <div style="display: flex; flex-direction: row;width:430px;margin-top:5px">
+            <input type="file"
+                style="display: block; border: 1px solid black; border-radius:0.25rem; padding:0.25rem;width:100%"
+                name="file" id="_imageFile">
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="https://oroblob.blob.core.windows.net/cspro/fabric.js"></script>
+<script type="text/javascript" src="https://oroblob.blob.core.windows.net/cspro/customiseControls.js"></script>
+<script type="text/javascript" src="https://oroblob.blob.core.windows.net/cspro/freeFormAzureV2.js" defer=""></script>

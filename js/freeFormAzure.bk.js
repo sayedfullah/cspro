@@ -1,11 +1,11 @@
 (()=>
     {  
-        const { warn, log, debug } = console;
-        const hostUrl = "https://sayedfullah.github.io/cspro";
-        const parentUrl = "https://sayedfullah.github.io/cspro";//https://www.oroafrica.uat2.dev01.cslweb.uk/images/prism/svg/sketch.txt
+        const { warn, log } = console;
+        const hostUrl = "https://www.oroafrica.uat2.dev01.cslweb.uk";
+        const blobUrl = "https://oroblob.blob.core.windows.net/cspro"
         var doc, svgString;
         const parser = new DOMParser();
-    
+        const version = "1.0.0";
         const canvasConfig = {backgroundColor:"#fff",width:"300",height:"300",objectCaching:false,hoverCursor:"pointer",enableRetinaScaling:true};
         const canvas = new fabric.Canvas("canvas",canvasConfig);
         var obj, shapeGroup;
@@ -14,44 +14,45 @@
         ,shapeIndexSize = 0
         ,shapeIndex = 0
         ,cam,
-        img;
+        imgIndex=0,
+        imgTypes = [`${blobUrl}/images/HRT-AG.png`,`${blobUrl}/images/HRT-9Y.png`,`${blobUrl}/images/HRT-9R.png`],
+        
+        imgObject,
+        userText;
         //-----------------------------------------------
         var alignCount = 0
         ,fontColCount = 0;
         
         let init =()=>
         {
-            log("Requesting SVG from server!");
-            // fetch(`${hostUrl}"/svg/"`.concat("sketch.svg"),{method:"POST",contentType:"application/x-www-form-urlencoded"})
-            // fetch("https://sayedfullah.github.io/cspro/svg/sketch.svg")
-            // fetch(`/svg/sketch.svg`,{ mode: 'no-cors' })
-            fetch(`/svg/sketch.svg`)
+            log("Requesting SVG from server! ", version);
+            // fetch(`/images/prism/svg/sketch.txt`,{ mode: 'no-cors' })
+            // fetch(`/images/prism/svg/sketch.txt`,{ mode: 'no-cors' })
+            const productElement = document.querySelector(".productId");
+            const _sourceSVG = (productElement !== null) ? productElement : "HRT";
+            fetch(`${blobUrl}/svg/${_sourceSVG}.svg`)
             .then(resp=> resp.text())
             .then(data=> 
             {
-                // doc = parser.parseFromString(data.obverse,"image/svg+xml");
-                // log(" ===================== ",data)
                 doc = parser.parseFromString(data,"image/svg+xml");
                 shapes = doc.getElementsByTagName("path");
                 shapeIndexSize = shapes.length;
                 cam = doc.getElementsByTagName("cam")[0];
-                
-                // img = doc.getElementsByTagName("image")[0];
-
+    
                 canvas.remove(obj);
                 let impi = shapes[shapeIndex];
                 let svg = createElement();
                 //add svg children to new svg
                 svg.appendChild(impi);
-                // svg.appendChild(img);
-                loadImageFromURL("https://oroblob.blob.core.windows.net/cspro/images/HRT-9Y.png");
+
+                loadImageFromURL(imgTypes[imgIndex]);
+
                 svgString = new XMLSerializer().serializeToString(svg);
-    
+
                 shapeGroup = fabric.loadSVGFromString(svgString,function(objects, options) 
                 {
                   obj = fabric.util.groupSVGElements(objects, options);
                   obj.set({selectable:false,objectCache:false});
-                  
                   canvas.add(obj).renderAll();
                   obj.moveTo(0);
                   obj.center();
@@ -63,64 +64,28 @@
             .catch(er=>
                 {warn(er);});
         };
-    
-        let emojicons =()=>
-            {
-                log("Requesting SVG from server!");
-                // fetch(`${hostUrl}"/svg/"`.concat("sketch.svg"),{method:"POST",contentType:"application/x-www-form-urlencoded"})
-                // fetch("https://sayedfullah.github.io/cspro/svg/sketch.svg")
-                // fetch(`https://www.oroafrica.uat2.dev01.cslweb.uk//design/themes/oroafrica/svg/emoji.txt`,{ mode: 'no-cors' })
-                fetch(`http:127.0.0.1/svg/sketch.svg`,{ mode: 'no-cors' })
-                .then(resp=> resp.text())
-                .then(data=> 
-                {
-                    // doc = parser.parseFromString(data.obverse,"image/svg+xml");
-                    // log(" ===================== ",data)
-                    doc = parser.parseFromString(data,"image/svg+xml");
-                    shapes = doc.getElementsByTagName("path");
-                    const emojiLength = shapes.length;
-        
-                    canvas.remove(obj);
-                    let impi = shapes[shapeIndex];
-                    let svg = createElement();
-                    svg.appendChild(impi);
-        
-                    svgString = new XMLSerializer().serializeToString(svg);
-        
-                    shapeGroup = fabric.loadSVGFromString(svgString,function(objects, options) 
-                    {
-                      obj = fabric.util.groupSVGElements(objects, options);
-                      obj.set({selectable:true,objectCache:false});
-                      canvas.add(obj).renderAll();
-                    //   obj.moveTo(0);
-                      obj.center();
-                    //   canvas.sendToBack(obj);
-                    });
-                    
-                    // scaleCanvasUp();
-                })
-                .catch(er=>
-                    {warn(er);});
-            };
 
-        const addText=()=>
+        const addText=(_fontColCount)=>
         {
+            fontColCount = (_fontColCount) ? _fontColCount : fontColCount;
             let props = 
             {
-                fill:"#00f"
+                fill:"#000"
                 ,originX:"center"
                 ,originY:"center"
                 ,left:225
                 ,objectCaching:false
                 ,textAlign:"center"
-                ,top:180
-                ,fontSize:10
+                ,top:225
+                ,fontSize:fontChanger(fontColCount).fontSize
                 ,padding:50
-                ,fontFamily:"z_lucida"
+                ,fontFamily:fontChanger(fontColCount).font
             };
-            var s = new fabric.IText("text",props);
+            userText = new fabric.IText("Click to edit",props);
             
-            canvas.add(s);
+            canvas.add(userText);
+            userText.bringToFront();
+            // canvas.moveTo(userText, 2);
             canvas.renderAll();
         };
     
@@ -128,11 +93,26 @@
         const actionButtons=()=>
         {
             let g = $(".canvasBtn").toArray();
-            $(g[0]).click(()=>{shapeChangerLeft();init();});
-            $(g[1]).click(()=>  addText());
-            $(g[2]).click(()=>{shapeChangerRight();init();});
+            let h = $(".fontBtn").toArray();
+            let j = $(".birthBtn").toArray();
+
+            $(g[0]).click(()=> selectAg());
+            $(g[1]).click(()=>  select9y());
+            $(g[2]).click(()=> select9r());
+
+            h.map((el,i)=> $(el).click(()=> activeFontSwap(i)));
+            j.map((el,i)=> $(el).click(()=> loadBirthFromURL(el.id)));
+
         };
            
+        const activeFontSwap = (num)=>
+        {
+            let s = (canvas.getActiveObject()) ? canvas.getActiveObject() : addText(num);
+            s.set({fontFamily:fontChanger(num).font,fontSize:fontChanger(num).fontSize});
+            canvas.discardActiveObject().renderAll();
+            canvas.setActiveObject(s);
+        }
+
         const config=()=>
         {
             //basic settings
@@ -141,18 +121,19 @@
                             borderColor: '#efefef',
                             cornerSize: 25,
                             cornerShape: 'circle',
-                            cornerBackgroundColor: '#efefef',
+                            cornerBackgroundColor: '#efefef',//rgba(150,150,150,0.6)
                             cornerPadding:7
                     }
-                    ,tl:{icon: `${hostUrl}/ico/delete.svg`,cornerColor:"red"}
-                    ,tr:{icon: `${hostUrl}/ico/scale.svg`}
+                    ,tl:{icon: `${blobUrl}/ico/delete.svg`,cornerColor:"red"}
+                    ,tr:{icon: `${blobUrl}/ico/scale.svg`}
                     ,ml:{}
                     ,mr:{}
                     ,mt:{}
-                    ,mb:{icon: `${hostUrl}/ico/align.svg`}
-                    ,bl:{icon: `${hostUrl}/ico/palette.svg`}
-                    ,br:{icon:`${hostUrl}/ico/font.svg`}
-                    ,mtr:{icon: `${hostUrl}/ico/rotate.svg`}
+                    ,mb:{icon: `${blobUrl}/ico/align.svg`}
+                    ,bl:{}
+                    // ,bl:{icon: `${blobUrl}/ico/palette.svg`}
+                    ,br:{icon:`${blobUrl}/ico/font.svg`}
+                    ,mtr:{icon: `${blobUrl}/ico/rotate.svg`}
             });
     
             fabric.Canvas.prototype.customiseControls({
@@ -165,24 +146,26 @@
                 },
                 bl: {
                     cursor: 'pointer'
-                    ,action: ()=>{
-                                            let s = canvas.getActiveObject();
-                                            fontColCount = (fontColCount > 1) ? 0 : fontColCount;
-                                            s.set({fill:textColour(fontColCount)});
-                                            fontColCount +=1;
-                                            canvas.discardActiveObject().renderAll();
-                                            canvas.setActiveObject(s);
-                                        }
+                    // ,action: ()=>
+                    // {
+                    //     let s = canvas.getActiveObject();
+                    //     fontColCount = (fontColCount > 1) ? 0 : fontColCount;
+                    //     s.set({fill:textColour(fontColCount)});
+                    //     fontColCount +=1;
+                    //     canvas.discardActiveObject().renderAll();
+                    //     canvas.setActiveObject(s);
+                    // }
                 },
                 br: {
                     cursor: 'pointer'  
                     ,action: ()=>{
-                        fontColCount = (fontColCount > 3) ? 0 : fontColCount;
+                        fontColCount = (fontColCount > 4) ? 0 : fontColCount;
                         let s = canvas.getActiveObject();
-                        s.set({fontFamily:fontChanger(fontColCount)});
                         fontColCount++;
-                                            canvas.discardActiveObject().renderAll();
-                                            canvas.setActiveObject(s);
+                        s.set({fontFamily:fontChanger(fontColCount).font,fontSize:fontChanger(fontColCount).fontSize});
+                        // fontColCount++;
+                        canvas.discardActiveObject().renderAll();
+                        canvas.setActiveObject(s);
                     }
                 },
                 mb: {
@@ -190,11 +173,10 @@
                     ,action: ()=>{
                         let s = canvas.getActiveObject();
                         alignCount = (alignCount > 2) ? 0 : alignCount;
-                                            warn("aligncount: ",alignCount);
                         s.set({textAlign:textAlignment(alignCount)});
                         alignCount++;
                         canvas.discardActiveObject().renderAll();
-                                            canvas.setActiveObject(s);
+                        canvas.setActiveObject(s);
                     }
                 },
                 mr: {
@@ -219,7 +201,6 @@
             canvas.setWidth(450);
             canvas.setHeight(450);
             canvas.zoomToPoint(new fabric.Point(225, 225), 3);
-            // canvas.zoomToPoint(new fabric.Point(150, 150), 3);
         };
         
         const scaleCanvasDown=()=>
@@ -232,15 +213,15 @@
         const zoomCanvas=()=>
         {
             canvas.on('mouse:wheel', (opt)=> {
-                    var delta = opt.e.deltaY;
-                    var zoom = canvas.getZoom();
-                    zoom *= 0.999 ** delta;
-                    if (zoom > 5) zoom = 5;
-                    if (zoom < 1) zoom = 1;
-                    canvas.zoomToPoint(new fabric.Point(canvas.width/2, canvas.height/2), zoom);
-                    opt.e.preventDefault();
-                    opt.e.stopPropagation();
-                  });
+            var delta = opt.e.deltaY;
+            var zoom = canvas.getZoom();
+            zoom *= 0.999 ** delta;
+            if (zoom > 5) zoom = 5;
+            if (zoom < 1) zoom = 1;
+            canvas.zoomToPoint(new fabric.Point(canvas.width/2, canvas.height/2), zoom);
+            opt.e.preventDefault();
+            opt.e.stopPropagation();
+            });
             
         };
         const textAlignment=(a)=>
@@ -250,7 +231,7 @@
         
         const textColour=(a)=>
         {
-            return ["#000","#646464"][a];
+            return ["#f00","#0f0","#646464"][a];
         };
         
         let createElement=()=>
@@ -258,16 +239,127 @@
             var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             svg.setAttribute("width",300);
             svg.setAttribute("height",300);
-            svg.setAttribute("shape-rendering","crispEdges");
-            svg.setAttribute("image-rendering","pixelated");
             return svg;
         };
         
-        const shapeChangerRight=()=>
-        {
-            shapeIndex = (shapeIndex < (shapeIndexSize-1)) ? shapeIndex+1 : 0;
-        };
+
+        const loadImageFromURL = (imageUrl) => {
+            fabric.Image.fromURL(imageUrl, function(img) {
+                img.scaleToWidth(200);
+                img.set({
+                    left: 125,
+                    top: 116,
+                    angle: 0,
+                    selectable: true
+                });
         
+                // Remove previous image if it exists
+                if (imgObject) {
+                    canvas.remove(imgObject);
+                }
+        
+                // Add the new image to the canvas
+                img.selectable = false;
+                  
+                canvas.add(img);
+                // img.center;
+                canvas.moveTo(img, 1);
+                // canvas.bringToFront();
+                // Render the canvas
+                canvas.renderAll();
+                objectExit(img);
+                imgObject = img; // Keep reference to the current image
+                
+            });
+        };
+
+        const loadBirthFromURL = (imageUrl) => {
+            let birthTypes = ["DIAMOND","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]
+                            .map((n)=>`${blobUrl}/accents/A${n}.png`);
+            let _birthStone = birthTypes.find(url => url.includes(imageUrl));
+            
+            const rndLeft = Math.floor(Math.random() * 21);
+           
+            fabric.Image.fromURL(_birthStone, function(img) {
+                img.scaleToWidth(8.6);
+                img.set({
+                    left: 225,
+                    top: 225.2,
+                    angle: 0,
+                    selectable: true,
+                    lockScalingX: true,  
+                    lockScalingY: true,
+                    lockScaling: true 
+                });
+
+                // Customize selection controls specifically for this image
+                // img.set({
+                //     borderColor: '#efefef',
+                //     cornerColor: 'green',
+                //     cornerSize: 20,
+                //     transparentCorners: false
+                // });
+
+                // // More granular control over which handles are visible
+                // img.setControlsVisibility({
+                //     mt: false, // middle top disable
+                //     mb: false, // middle bottom disable
+                //     ml: false, // middle left disable
+                //     mr: false, // middle right disable
+                //     bl: false, // bottom left disable
+                //     br: false, // bottom right disable
+                //     tl: true, // top left disable
+                //     tr: false, // top right disable
+                //     mtr: true  // rotation handle
+                // });
+
+                const circle = new fabric.Circle({
+                    radius: 3.9, // radius is half the diameter
+                    fill: 'rgba(0,0,255,01)', // semi-transparent black
+                    stroke: 'rgba(0,0,0,0.3)', // slight stroke for visibility
+                    strokeWidth: 0,
+                    left: 225.3, // same left as image
+                    top: 225.5, // positioned slightly below the image
+                    selectable: false // prevent direct manipulation
+                });
+        
+                // Create a group with the image and circle
+                const group = new fabric.Group([circle,img], {
+                    left: 225 + rndLeft,
+                    top: 225,
+                    selectable: true
+                });
+
+                group.set({
+                    borderColor: '#efefef',
+                    cornerColor: 'green',
+                    cornerSize: 20,
+                    transparentCorners: false
+                });
+
+                // More granular control over which handles are visible
+                group.setControlsVisibility({
+                    mt: false, // middle top disable
+                    mb: false, // middle bottom disable
+                    ml: false, // middle left disable
+                    mr: false, // middle right disable
+                    bl: false, // bottom left disable
+                    br: false, // bottom right disable
+                    tl: true, // top left disable
+                    tr: false, // top right disable
+                    mtr: true  // rotation handle
+                });
+
+                // Add the new image to the canvas
+                canvas.add(group); 
+                // canvas.add(img);
+                // img.selectable = true;
+                canvas.bringToFront();
+                canvas.renderAll();
+                objectExit(group);
+            });
+        };
+
         const shapeChangerLeft=()=>
         {
             shapeIndex = (shapeIndex !== 0) ? shapeIndex-1 : (shapeIndexSize-1);
@@ -309,7 +401,7 @@
         
                 let svgData = canvas.toSVG();
                 let img = new Image();
-        
+                img.crossOrigin = "anonymous";
                 img.onload = () => {
                     ctx.drawImage(img, 0, 0, dim, dim);
         
@@ -375,53 +467,40 @@
         
         const fontChanger=(a)=> 
         {
-            return ["z_swan","z_lucida","z_boli"][a];
+            // return ["z_corsiva","z_boli","z_swan","z_chaparrals","z_english"][a];
+            return [
+                {font:"z_corsiva",fontSize:8},
+                {font:"z_boli",fontSize:8},
+                {font:"z_swan",fontSize:18},
+                {font:"z_chaparrals",fontSize:8},
+                {font:"z_english",fontSize:9}][a];
         };
         
-        //------------------------END HELPER FUNCTIONS----------------------------->
-        const loadImageFromURL= (imageUrl)=>
+        const selectAg=()=>
         {
-            fabric.Image.fromURL(imageUrl, function(img) {
-                // Scale the image to fit the canvas while maintaining aspect ratio
-                img.scaleToWidth(200);
-                
-                // Center the image on the canvas
-                // img.set({
-                //     left: canvas.width / 2,
-                //     top: canvas.height / 2,
-                //     originX: 'center',
-                //     originY: 'center'
-                // });
+            imgIndex = 0;
+            loadImageFromURL(imgTypes[0]);
+        };
+        const select9y=()=>
+        {
+            imgIndex = 1;
+            loadImageFromURL(imgTypes[1]);
+        };
 
-                img.set({
-                    left: 125,
-                    top: 116,
-                    angle: 0
-                });
-                // Add the image to the canvas
-                img.selectable = false;
-                canvas.add(img);
-                canvas.renderAll();
-            }, {
-                // Optional crossOrigin setting if loading from a different domain
-                // crossOrigin: 'Anonymous'
-            });
-        }
-
+        const select9r=()=>
+        {
+            imgIndex = 2;
+            loadImageFromURL(imgTypes[2]);
+        };
+        //------------------------END HELPER FUNCTIONS----------------------------->
         const serialize=()=>
         {
             $(document).on("click","#_order",()=> 
             { 
-                log("********** ", getCanvas(doc));
+                log("serialize: ", getCanvas(doc));
                 const x = parser.parseFromString(getCanvas(doc),"image/svg+xml");
-                // let svg3 = createElement();
-                //     svg3.appendChild(x);
                 const svgExport = svgDown(x);
-                // const svgExport = getCanvas(doc);
-                log(" +++++++++++++ ",svgExport);
                 const blob = new Blob([svgExport], { type: "image/svg+xml" });
-                // const blob = new Blob([svgString], { type: "image/svg+xml" });
-    
                 // Create an object URL
                 const url = URL.createObjectURL(blob);
                 
@@ -430,38 +509,12 @@
                 a.href = url;
                 a.download = "sampleSvg.svg";
                 
-                // Append to the document, trigger download, and remove the element
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 
                 // Revoke the object URL
                 URL.revokeObjectURL(url);
-
-                $("#_order").find("span:first").addClass("spinner-border spinner-border-sm");
-                // doc = parser.parseFromString(getCanvas(),"image/svg+xml");
-                // const svgExport = svgDown(doc);
-                // let f = new FormData();
-                // f.append("schema",document.title); 
-                // f.append("svg",svgExport);
-                // f.append("sketch",$("#_imageFile").prop("files")[0]);
-    
-                // var requestOptions = 
-                // {
-                //    method: 'POST'
-                //   ,contentType: "application/x-www-form-urlencoded;charset=UTF-8" 
-                //   ,body: f
-                // };
-    
-                // fetch("/saveSvgSketch/".concat(document.title),requestOptions)
-                //     .then(resp=> resp.json())
-                //     .then(d=> {$("#_order").find("span:first").removeClass("spinner-border spinner-border-sm");
-                //                 $("#thd").html(`<b class='text-white'>${d.schema}</b>`);
-                //                 $("#tbd").html(`<i class='small'>${d.json}</i>`);$(".toast").toast("show");
-                //                 $("#_url").text(d.json);})
-                //     .catch(er=> {$("#_order").find("span:first").removeClass("spinner-border spinner-border-sm");
-                //                 $("#thd").html(`<b class='text-white'>ERROR:</b>`);
-                //                 $("#tbd").html(`<i class='small'>${er}</i>`);$(".toast").toast("show");});
             });
         };
         
@@ -480,7 +533,7 @@
                     ,top:180
                     ,fontSize:10
                     ,padding:50
-                    ,fontFamily:"z_lucida"
+                    ,fontFamily:"z_corsiva"
                 };
                 var s = new fabric.IText("♥",props);
                 //s.enableEditing(false);
@@ -488,7 +541,38 @@
                 canvas.renderAll();
             });
         };
+      
+        const objectExit = (obj) => {
+            obj.on('mouseout', function(event) {
+                if (canvas.getActiveObject() === obj) {
+                    canvas.discardActiveObject();
+                    canvas.renderAll();
+                }
+            });
+        }
+       
+        //   canvas.on('mouse:out', function(event) {
+        //         // Check if there's an active object
+        //         const activeObject = canvas.getActiveObject();
+                
+        //         if (activeObject) {
+        //             // Deselect the object
+        //             canvas.discardActiveObject();
+        //             canvas.renderAll();
+        //         }
+        //     });
+        // canvas.wrapperEl.addEventListener('mouseleave', function() {
+        //     canvas.discardActiveObject();
+        //     canvas.renderAll();
+        // });
 
+        // canvas.on('mouse:out', function(options) {
+        //     if (options.target) {
+                
+        //         setTimeout(()=>{canvas.discardActiveObject();canvas.renderAll();},3000);
+                
+        //     }
+        // });
         const render=(()=>
         {
             init();

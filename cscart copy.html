@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <title>cscart</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+    <style>
+        @font-face {
+            font-family: 'z_boli';
+            src: url('https://oroblob.blob.core.windows.net/cspro/fonts/z_boli.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'z_chaparrals';
+            src: url('https://oroblob.blob.core.windows.net/cspro/fonts/z_chaparrals.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'z_corsiva';
+            src: url('https://oroblob.blob.core.windows.net/cspro/fonts/z_corsiva.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'z_english';
+            src: url('https://oroblob.blob.core.windows.net/cspro/fonts/z_english.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'z_swan';
+            src: url('https://oroblob.blob.core.windows.net/cspro/fonts/z_swan.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .font-boli {
+            font-family: 'z_boli', sans-serif;
+        }
+
+        .font-chaparrals {
+            font-family: 'z_chaparrals', serif;
+        }
+
+        .font-corsiva {
+            font-family: 'z_corsiva', cursive;
+        }
+
+        .font-english {
+            font-family: 'z_english', serif;
+        }
+
+        .font-swan {
+            font-family: 'z_swan', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex; gap: 20px; align-items: center;flex-direction:column;" class="mt-10" id="svgHost">
+        <div style="flex: 1; display: flex;  justify-content: center;">
+            <canvas id="canvas" width="450" height="450"
+                style="max-width: 450px; width: 100%; border: 2px solid #efefef;border-radius:10px"></canvas>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+            <div style="display: flex; gap: 5px;">
+                <button class="canvasBtn">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/AG.png"
+                        class="metalColor border border-gray-200 rounded-full shadow-lg hover:animate-pulse" width="35"
+                        height="35" alt="ag" />
+                </button>
+                <button class="canvasBtn">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/9Y.png"
+                        class="metalColor border border-yellow-200 rounded-full shadow-lg hover:animate-pulse"
+                        width="35" height="25" alt="9y" />
+                </button>
+                <button class="canvasBtn">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/9R.png"
+                        class="metalColor  border border-rose-200 rounded-full shadow-lg hover:animate-pulse" width="35"
+                        height="35" alt="9r" />
+                </button>
+                <div class=""></div>
+                <button class="fontBtn">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/z_corsiva.png"
+                        class="metalColor border border-gray-200 rounded-full hover:animate-pulse" width="35"
+                        height="35" alt="z_corsiva" />
+                </button>
+                <button class="fontBtn">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/z_boli.png"
+                        class="metalColor border border-gray-200 rounded-full hover:animate-pulse" width="35"
+                        height="35" alt="z_corsiva" />
+                </button>
+                <button class="fontBtn">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/z_swan.png"
+                        class="metalColor border border-gray-200 rounded-full hover:animate-pulse" width="35"
+                        height="35" alt="z_corsiva" />
+                </button>
+                <button class="fontBtn">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/z_chaparrals.png"
+                        class="metalColor border border-gray-200 rounded-full hover:animate-pulse" width="35"
+                        height="35" alt="z_corsiva" />
+                </button>
+                <button class="fontBtn">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/z_english.png"
+                        class="metalColor border border-gray-200 rounded-full hover:animate-pulse" width="35"
+                        height="35" alt="z_corsiva" />
+                </button>
+            </div>
+
+            <!-- <div style="display: flex; gap: 5px;">
+                <button class="canvasBtn"
+                    style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer;">&lt;</button>
+                <button class="canvasBtn"
+                    style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer;">Text</button>
+                <button class="canvasBtn"
+                    style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer;">&gt;</button>
+                <button class="" id="_heart"
+                    style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer;">♥</button>
+            </div> -->
+
+            <div style="display: flex; gap: 1px;">
+                <button class="birthBtn" id="DIAMOND">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/DIAMOND.png" class="h-[35px] w-[35px]"
+                        alt="DIAMOND" />
+                </button>
+                <button class="birthBtn" id="JAN">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/JAN.png" class="h-[35px] w-[35px]"
+                        alt="JAN" />
+                </button>
+                <button class="birthBtn" id="FEB">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/FEB.png" class="h-[35px] w-[35px]"
+                        alt="FEB" />
+                </button>
+                <button class="birthBtn" id="MAR">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/MAR.png" class="h-[35px] w-[35px]"
+                        alt="MAR" />
+                </button>
+                <button class="birthBtn" id="APR">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/APR.png" class="h-[35px] w-[35px]"
+                        alt="APR" />
+                </button>
+                <button class="birthBtn" id="MAY">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/MAY.png" class="h-[35px] w-[35px]"
+                        alt="MAY" />
+                </button>
+                <button class="birthBtn" id="JUN">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/JUN.png" class="h-[35px] w-[35px]"
+                        alt="JUN" />
+                </button>
+                <button class="birthBtn" id="JUL">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/JUL.png" class="h-[35px] w-[35px]"
+                        alt="JUL" />
+                </button>
+                <button class="birthBtn" id="AUG">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/AUG.png" class="h-[35px] w-[35px]"
+                        alt="AUG" />
+                </button>
+                <button class="birthBtn" id="SEP">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/SEP.png" class="h-[35px] w-[35px]"
+                        alt="SEP" />
+                </button>
+                <button class="birthBtn" id="OCT">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/OCT.png" class="h-[35px] w-[35px]"
+                        alt="OCT" />
+                </button>
+                <button class="birthBtn" id="NOV">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/NOV.png" class="h-[35px] w-[35px]"
+                        alt="NOV" />
+                </button>
+                <button class="birthBtn" id="DEC">
+                    <img src="https://oroblob.blob.core.windows.net/cspro/images/DEC.png" class="h-[35px] w-[35px]"
+                        alt="DEC" />
+                </button>
+            </div>
+
+            <div class="flex gap-3 rounded w-full">
+                <label
+                    style="padding: 8px 12px; border: 2px solid #b4b4b4; cursor: pointer; display: inline-block;width:100%; border-radius:5px">
+                    Upload
+                    <input type="file" id="_imageFile" style="display: none;">
+                </label>
+            </div>
+
+            <div class="flex gap-3 rounded">
+                <label
+                    style="padding: 8px 12px; border: none; background: #007bff; color: white; cursor: pointer; display: inline-block;">
+                    Upload
+                    <input type="file" id="_imageFile" style="display: none;">
+                </label>
+                <button id="_order"
+                    style="padding: 8px 12px; border: none; background: #28a745; color: white; cursor: pointer;">SVG</button>
+                <button id="_share"
+                    style="padding: 8px 12px; border: none; background: #dc3545; color: white; cursor: pointer;">Download</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Array of font URLs
+        const fontUrls = [
+            'https://oroblob.blob.core.windows.net/cspro/fonts/z_boli.woff2',
+            'https://oroblob.blob.core.windows.net/cspro/fonts/z_chaparrals.woff2',
+            'https://oroblob.blob.core.windows.net/cspro/fonts/z_corsiva.woff2',
+            'https://oroblob.blob.core.windows.net/cspro/fonts/z_english.woff2',
+            'https://oroblob.blob.core.windows.net/cspro/fonts/z_swan.woff2'
+        ];
+
+        // Font names corresponding to the URLs
+        const fontNames = [
+            'z_boli',
+            'z_chaparrals',
+            'z_corsiva',
+            'z_english',
+            'z_swan'
+        ];
+
+        // Function to load fonts
+        function loadFonts() {
+            const fontFaces = fontUrls.map((url, index) => {
+                return new FontFace(fontNames[index], `url(${url})`);
+            });
+
+            // Add fonts to document
+            fontFaces.forEach(fontFace => {
+                fontFace.load().then(loadedFace => {
+                    document.fonts.add(loadedFace);
+                }).catch(error => {
+                    console.error(`Error loading font ${fontFace.family}:`, error);
+                });
+            });
+        }
+
+        // Create canvas and add text once fonts are loaded
+
+        function initCanvas() {
+            const canvas = new fabric.Canvas('canvas');
+
+            // Add text with different fonts
+            fontNames.forEach((fontName, index) => {
+                const text = new fabric.Textbox(`${fontName} Font`, {
+                    left: 50,
+                    top: 50 + index * 60,
+                    width: 500,
+                    fontSize: 30,
+                    fontFamily: fontName,
+                    fill: 'black',
+                    backgroundColor: `rgba(${index * 50}, ${255 - index * 50}, 100, 0.2)`
+                });
+                //canvas.add(text);
+
+            });
+        }
+
+        // Load fonts, then initialize canvas
+        loadFonts();
+
+        // Wait a bit to ensure fonts are loaded before creating canvas text
+        // setTimeout(initCanvas, 1000);
+    </script>
+    <script type="text/javascript" src="./js/fabric.js"></script>
+    <script type="text/javascript" src="./js/customiseControls.js"></script>
+    <script type="text/javascript" src="./js/freeFormAzure.js" defer=""></script>
+
+</body>
+
+</html>
