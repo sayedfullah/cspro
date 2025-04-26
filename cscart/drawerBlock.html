@@ -1,0 +1,91 @@
+<div id="custom-right-drawer">
+    <div class="drawer-content">
+        <div class="drawer-toggle">
+            <span class="chevron">❮</span>
+        </div>
+        <div>
+            <p>This is a right-side drawer in CS-Cart.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Drawer styles */
+    #custom-right-drawer {
+        position: fixed;
+        top: 200px;
+        right: -440px;
+        width: 450px;
+        height: calc(100% - 200px);
+        background: #fff;
+        border-left: 1px solid #ddd;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        z-index: 9999;
+        overflow-y: auto;
+    }
+
+    /* Drawer open state */
+    #custom-right-drawer.open {
+        right: 0;
+    }
+
+    .drawer-toggle {
+        position: absolute;
+        top: 10px;
+        left: -30px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-right: none;
+        box-shadow: -1px 0 3px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        z-index: 10001;
+    }
+
+    .chevron {
+        transform: rotate(0deg);
+        transition: transform 0.3s ease;
+    }
+
+    #custom-right-drawer.open .chevron {
+        transform: rotate(180deg);
+    }
+
+    .drawer-content {
+        padding: 20px;
+        /* overflow-y: auto;
+        height: 100%;*/
+        height: auto;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 1280px) {
+        #custom-right-drawer {
+            width: 90vw;
+            max-width: 450px;
+            right: -90vw;
+        }
+
+        #custom-right-drawer.open {
+            right: 0;
+        }
+
+        .drawer-toggle {
+            left: -30px;
+        }
+    }
+</style>
+<script>    $(document).ready(function () {
+        $('.drawer-toggle').on('click', function () {
+            $('#custom-right-drawer').toggleClass('open');
+        });
+    });
+</script>

@@ -23,6 +23,10 @@
         var alignCount = 0
         ,fontColCount = 0;
         
+        /* zoom locations for mobile and desktop */
+        var mobileSize = {"birthTop": 150,"birthLeft":150,"textTop":150,"textLeft":150,"productTop":40,"productLeft":50};   
+        var desktopSize ={"birthTop": 225.2,"birthLeft":225,"textTop":225,"textLeft":225,"productTop":116,"productLeft":125};  
+        var isMobile = false;
         let init =()=>
         {
             log("Requesting SVG from server! ", version);
@@ -74,10 +78,10 @@
                 fill:"#000"
                 ,originX:"center"
                 ,originY:"center"
-                ,left:225
+                ,left: (isMobile) ? mobileSize.textLeft : desktopSize.textLeft //150 //225
                 ,objectCaching:false
                 ,textAlign:"center"
-                ,top:225
+                ,top: (isMobile) ? mobileSize.textTop : desktopSize.textTop //150 //225
                 ,fontSize:fontChanger(fontColCount).fontSize
                 ,padding:50
                 ,fontFamily:fontChanger(fontColCount).font
@@ -189,19 +193,28 @@
         //------------------------HELPER FUNCTIONS--------------------------------->
         const scaleCanvasUp=()=>
         {
-            const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            console.log("mobile device detected: ",isMobile);
-            if (!isMobile)
+            const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            isMobile = isMobileDevice;
+            console.log("mobile device detected: ",isMobileDevice);
+            if (!isMobileDevice)
             {
+                
                 canvas.setWidth(450);
                 canvas.setHeight(450);
                 canvas.zoomToPoint(new fabric.Point(225, 225), 3);
+            }
+            else
+            {
+                canvas.setWidth(300);
+                canvas.setHeight(300);
+                canvas.zoomToPoint(new fabric.Point(150, 150), 3);
             }
         };
         
         const scaleCanvasDown=()=>
         {
             //optional method
+            //deviceZoom
             canvas.setWidth(300);
             canvas.setHeight(300);
         };
@@ -225,11 +238,6 @@
             return ["left","center","right"][a];
         };
         
-        const textColour=(a)=>
-        {
-            return ["#f00","#0f0","#646464"][a];
-        };
-        
         let createElement=()=>
         {
             var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -243,10 +251,13 @@
             fabric.Image.fromURL(imageUrl, function(img) {
                 img.scaleToWidth(200);
                 img.set({
-                    left: 125,
-                    top: 116,
+                    // left: 125, //125
+                    // top: 116,//40, //116
+                    left: (isMobile) ?  mobileSize.productLeft : desktopSize.productLeft, //50, //125
+                    top: (isMobile) ? mobileSize.productTop : desktopSize.productTop,//40, //116
                     angle: 0,
-                    selectable: true
+                    selectable: true,
+                    
                 });
         
                 // Remove previous image if it exists
@@ -276,8 +287,8 @@
             fabric.Image.fromURL(_birthStone, function(img) {
                 img.scaleToWidth(8.6);
                 img.set({
-                    left: 225+rndLeft,
-                    top: 225.2,
+                    left: (isMobile) ? mobileSize.birthLeft + rndLeft : desktopSize.birthLeft + rndLeft, //150 + rndLeft, //225
+                    top: (isMobile) ? mobileSize.birthTop : desktopSize.birthTop, //150, //225.2
                     angle: 0,
                     selectable: true,
                     lockScalingX: true,  
