@@ -1,0 +1,182 @@
+@font-face {
+    font-family: 'z_boli';
+    src: url('https://oroblob.blob.core.windows.net/cspro/fonts/z_boli.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'z_chaparrals';
+    src: url('https://oroblob.blob.core.windows.net/cspro/fonts/z_chaparrals.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'z_corsiva';
+    src: url('https://oroblob.blob.core.windows.net/cspro/fonts/z_corsiva.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'z_english';
+    src: url('https://oroblob.blob.core.windows.net/cspro/fonts/z_english.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'z_swan';
+    src: url('https://oroblob.blob.core.windows.net/cspro/fonts/z_swan.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font-boli {
+    font-family: 'z_boli', sans-serif;
+}
+
+.font-chaparrals {
+    font-family: 'z_chaparrals', serif;
+}
+
+.font-corsiva {
+    font-family: 'z_corsiva', cursive;
+}
+
+.font-english {
+    font-family: 'z_english', serif;
+}
+
+.font-swan {
+    font-family: 'z_swan', sans-serif;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* side pane */
+.toggle-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+    z-index: 1000;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 450px;
+    height: 100%;
+    background: #fafafa;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    transition: right 1s ease;
+    z-index: 999;
+}
+
+.drawer.open {
+    right: 0;
+}
+
+.close-btn {
+    font-size: 1.5rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+/* Carousel styles */
+.emoji-carousel-container {
+    position: relative;
+    max-width: 300px;
+    margin: 20px auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.emoji-carousel {
+    display: flex;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    padding: 5px;
+    position: relative;
+}
+
+.emoji-list {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    transition: transform 0.3s ease;
+}
+
+.emoji-item {
+    flex: 0 0 auto;
+    padding: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
+    margin: 0 5px;
+    height: 30px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.emoji-item:hover {
+    transform: scale(1.1);
+}
+
+.emoji-item.selected {
+    transform: scale(1.15);
+}
+
+.nav-button {
+    user-select: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 2;
+}
+
+.nav-button:hover {
+    color: #000;
+    font-weight: bold;
+}
+
+.nav-prev {
+    left: -20px;
+}
+
+.nav-next {
+    right: -20px;
+}

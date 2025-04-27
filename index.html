@@ -1,67 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<style>
-	@font-face {
-		font-family: 'hero';
-		src: url('/images/prism/fonts/z_hero.woff2') format('woff2');
-		font-weight: normal;
-		font-style: normal;
-	}
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+	<title>cscart</title>
+	<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+		integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="./css/freeForm.css">
 
-	@font-face {
-		font-family: 'corsiva';
-		src: url('/images/prism/fonts/z_corsiva.woff2') format('woff2');
-		font-weight: normal;
-		font-style: normal;
-	}
+</head>
 
-	@font-face {
-		font-family: 'boli';
-		src: url('/images/prism/fonts/z_boli.woff2') format('woff2');
-		font-weight: normal;
-		font-style: normal;
-	}
-</style>
-<div id="mainContainer" style="display:flex;flex-direction:column;width:300px;max-width:450px">
-	<div id="svgHost" style="border: 1px solid #dee2e6;border-radius:5px;max-width:450px;width:100%">
-
-		<canvas id="canvas" style="border: 1px solid #dee2e6;width:300px;height:300px">canvas not supported</canvas>
-	</div>
-
-	<div style="border:1px solid #dee2e6;border-radius:5px;width:440px;padding:5px">
-		<div style="display: flex; flex-direction: row;justify-content:space-evenly;width:100%">
-			<button class="canvasBtn"
-				style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">
-				&lt;
-			</button>
-			<button class="canvasBtn"
-				style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">
-				text
-			</button>
-			<button class="canvasBtn"
-				style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">&gt;</button>
-			<button id="_heart"
-				style="border: 1px solid #6c757d; background: transparent; color: #6c757d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;width:50px">♥</button>
-			<button id="_order" class="fileBtn"
-				style="border: 1px solid #6c757d; background: transparent; color: #6c746d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;">
-				svg
-			</button>
-			<button id="_share" class="fileBtn"
-				style="border: 1px solid #6c757d; background: transparent; color: #6c346d; padding: 2px 8px; font-size: 0.875rem; margin: 4px; border-radius: 4px;">
-				image
-			</button>
+<body>
+	<div style="display: flex; gap: 20px; align-items: center;flex-direction:column;" class="mt-10" id="svgHost">
+		<div style="flex: 1; display: flex;  justify-content: center;">
+			<canvas id="canvas" width="450" height="450"
+				style="max-width: 450px; width: 100%; border: 2px solid #efefef;border-radius:10px"></canvas>
 		</div>
-		<div style="display: flex; flex-direction: row;width:430px;margin-top:5px">
-			<input type="file"
-				style="display: block; border: 1px solid black; border-radius:0.25rem; padding:0.25rem;width:430px"
-				name="file" id="_imageFile">
+
+		<div class="emoji-carousel-container" id="emoji-carousel-1">
+			<button class="nav-button nav-prev">❮</button>
+			<div class="emoji-carousel">
+				<ul class="emoji-list">
+					<li class="canvasBtn emoji-item">
+						<img src="https://oroblob.blob.core.windows.net/cspro/images/AG.png" class="metalColor"
+							alt="ag" />
+					</li>
+					<li class="canvasBtn emoji-item">
+						<img src="https://oroblob.blob.core.windows.net/cspro/images/9Y.png" class="metalColor"
+							alt="9y" />
+					</li>
+					<li class="canvasBtn emoji-item">
+						<img src="https://oroblob.blob.core.windows.net/cspro/images/9R.png" class="metalColor"
+							alt="9r" />
+					</li>
+					<li class="canvasBtn emoji-item">
+						<img src="https://oroblob.blob.core.windows.net/cspro/images/AG.png" class="metalColor"
+							alt="9w" />
+					</li>
+				</ul>
+			</div>
+			<button class="nav-button nav-next">❯</button>
+		</div>
+
+		<div class="emoji-carousel-container" id="emoji-carousel-2">
+			<button class="nav-button nav-prev">❮</button>
+			<div class="emoji-carousel">
+				<ul class="emoji-list">
+					<li class="fontBtn emoji-item">
+						<img src="https://oroblob.blob.core.windows.net/cspro/images/z_corsiva.png" alt="z_corsiva" />
+					</li>
+					<li class="fontBtn emoji-item">
+						<img src="https://oroblob.blob.core.windows.net/cspro/images/z_boli.png" alt="z_boli" />
+					</li>
+					<li class="fontBtn emoji-item">
+						<img src="https://oroblob.blob.core.windows.net/cspro/images/z_chaparrals.png"
+							alt="z_chaparrals" />
+					</li>
+					<li class="fontBtn emoji-item">
+						<img src="https://oroblob.blob.core.windows.net/cspro/images/z_english.png" alt="z_english" />
+					</li>
+				</ul>
+			</div>
+			<button class="nav-button nav-next">❯</button>
+		</div>
+
+		<div class="emoji-carousel-container" id="emoji-carousel-3">
+			<button class="nav-button nav-prev">❮</button>
+			<div class="emoji-carousel">
+				<ul class="emoji-list">
+					<li class="birthBtn emoji-item" id="DIAMOND"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/DIAMOND.png" alt="DIAMOND">
+					</li>
+					<li class="birthBtn emoji-item" id="JAN"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/JAN.png" alt="JAN"></li>
+					<li class="birthBtn emoji-item" id="FEB"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/FEB.png" alt="FEB"></li>
+					<li class="birthBtn emoji-item" id="MAR"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/MAR.png" alt="MAR" /></li>
+					<li class="birthBtn emoji-item" id="APR"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/APR.png" alt="APR" /></li>
+					<li class="birthBtn emoji-item" id="MAY"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/MAY.png" alt="MAY" /></li>
+					<li class="birthBtn emoji-item" id="JUN"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/JUN.png" alt="JUN" /></li>
+					<li class="birthBtn emoji-item" id="JUL"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/JUL.png" alt="JUL" /></li>
+					<li class="birthBtn emoji-item" id="AUG"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/AUG.png" alt="AUG" /></li>
+					<li class="birthBtn emoji-item" id="SEP"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/SEP.png" alt="SEP" /></li>
+					<li class="birthBtn emoji-item" id="OCT"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/OCT.png" alt="OCT" /></li>
+					<li class="birthBtn emoji-item" id="NOV"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/NOV.png" alt="NOV" /></li>
+					<li class="birthBtn emoji-item" id="DEC"><img
+							src="https://oroblob.blob.core.windows.net/cspro/images/DEC.png" alt="DEC" /></li>
+				</ul>
+			</div>
+			<button class="nav-button nav-next">❯</button>
+		</div>
+
+		<div style="display: flex; gap: 0.75rem; border-radius: 0.25rem;">
+			<label
+				style="padding: 4px 8px; border: 2px solid #b4b4b4; cursor: pointer; display: inline-block;min-width:200px;width:300px; border-radius:5px">
+				Upload image
+				<input type="file" id="_imageFile" style="display: none;">
+			</label>
+			<button id="_order"
+				style="padding: 4px 8px; border: none; background: #28a745; color: white; cursor: pointer;display:none">SVG</button>
+			<button id="_share"
+				style="padding: 4px 8px; border: none; background: #dc3545; color: white; cursor: pointer;display:none">Download</button>
 		</div>
 	</div>
+	</div>
+	<script>
+		// Array of font URLs
+		const fontUrls = [
+			'https://oroblob.blob.core.windows.net/cspro/fonts/z_boli.woff2',
+			'https://oroblob.blob.core.windows.net/cspro/fonts/z_chaparrals.woff2',
+			'https://oroblob.blob.core.windows.net/cspro/fonts/z_corsiva.woff2',
+			'https://oroblob.blob.core.windows.net/cspro/fonts/z_english.woff2',
+			'https://oroblob.blob.core.windows.net/cspro/fonts/z_swan.woff2'
+		];
 
-</div>
-<script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/fabric.js"></script>
-<script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/customiseControls.js"></script>
-<script type="text/javascript" src="https://sayedfullah.github.io/cspro/js/freeForm.js" defer=""></script>
+		// Font names corresponding to the URLs
+		const fontNames = [
+			'z_boli',
+			'z_chaparrals',
+			'z_corsiva',
+			'z_english',
+			'z_swan'
+		];
+
+		// Function to load fonts
+		function loadFonts() {
+			const fontFaces = fontUrls.map((url, index) => {
+				return new FontFace(fontNames[index], `url(${url})`);
+			});
+			// Add fonts to document
+			fontFaces.forEach(fontFace => {
+				fontFace.load().then(loadedFace => {
+					document.fonts.add(loadedFace);
+				}).catch(error => {
+					console.error(`Error loading font ${fontFace.family}:`, error);
+				});
+			});
+		}
+		loadFonts();
+	</script>
+	<script type="text/javascript" src="./js/fabric.js"></script>
+	<script type="text/javascript" src="./js/customiseControls.js"></script>
+	<script type="text/javascript" src="./js/freeFormAzureV3.js" defer=""></script>
+	<script type="text/javascript" src="./js/util.js" defer=""></script>
+	<!-- <script type="text/javascript" src="./js/loadCsPro.js" defer=""></script>-->
+	<!-- <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Generic function to initialize a carousel
+            function initCarousel(containerId) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+
+                const emojiList = container.querySelector('.emoji-list');
+                const emojiItems = container.querySelectorAll('.emoji-item');
+                const prevButton = container.querySelector('.nav-prev');
+                const nextButton = container.querySelector('.nav-next');
+                const carousel = container.querySelector('.emoji-carousel');
+
+                let scrollAmount = 0;
+                const itemWidth = 60; // Width of each item + margins
+                const scrollStep = itemWidth * 3; // Scroll 3 items at a time
+
+                // Navigation buttons for this carousel
+                if (prevButton) {
+                    prevButton.addEventListener('click', function () {
+                        scrollAmount = Math.max(scrollAmount - scrollStep, 0);
+                        emojiList.style.transform = `translateX(-${scrollAmount}px)`;
+                    });
+                }
+
+                if (nextButton) {
+                    nextButton.addEventListener('click', function () {
+                        const maxScroll = emojiList.scrollWidth - carousel.clientWidth;
+                        scrollAmount = Math.min(scrollAmount + scrollStep, maxScroll);
+                        emojiList.style.transform = `translateX(-${scrollAmount}px)`;
+                    });
+                }
+
+                // Return methods that can be used externally
+                return {
+                    scrollLeft: function () {
+                        if (prevButton) prevButton.click();
+                    },
+                    scrollRight: function () {
+                        if (nextButton) nextButton.click();
+                    }
+                };
+            }
+
+            // Initialize all carousels
+            const carousel1 = initCarousel('emoji-carousel-1');
+            const carousel2 = initCarousel('emoji-carousel-2');
+            const carousel3 = initCarousel('emoji-carousel-3');
+        });
+    </script> -->
+</body>
 
 </html>
