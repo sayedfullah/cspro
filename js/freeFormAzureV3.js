@@ -2,31 +2,42 @@
     {  
         const { warn, log } = console;
         const hostUrl = "https://www.oroafrica.uat2.dev01.cslweb.uk";
-        const blobUrl = "https://oroblob.blob.core.windows.net/cspro"
-        var doc, svgString;
+        // const blobUrl = "https://oroblob.blob.core.windows.net/cspro"
+        // var doc, svgString;
         const parser = new DOMParser();
         const version = "1.0.0";
         const canvasConfig = {backgroundColor:"#fff",width:"300",height:"300",objectCaching:false,hoverCursor:"pointer",enableRetinaScaling:true};
         const canvas = new fabric.Canvas("canvas",canvasConfig);
-        var obj, shapeGroup;
+        // var obj, shapeGroup;
         //-----------------------------------------------
-        var shapes
+        var 
+        blobUrl = "https://oroblob.blob.core.windows.net/cspro"
+        ,shapes
+        ,doc
+        ,svgString
         ,shapeIndexSize = 0
         ,shapeIndex = 0
         ,cam,
-        imgIndex=0,
-        imgTypes = [`${blobUrl}/images/HRT-AG.png`,`${blobUrl}/images/HRT-9Y.png`,`${blobUrl}/images/HRT-9R.png`],
+        imgIndex=0
+        ,imgTypes = [`${blobUrl}/images/HRT-AG.png`,`${blobUrl}/images/HRT-9Y.png`,`${blobUrl}/images/HRT-9R.png`,`${blobUrl}/images/HRT-AG.png`]   
+        ,imgObject
+        ,userText
+        ,obj
+        ,shapeGroup
+        ,alignCount = 0
+        ,fontColCount = 0
+        ,isMobile = false
+        ,mobileSize = {"birthTop": 150,"birthLeft":150,"textTop":150,"textLeft":150,"productTop":40,"productLeft":50,"mobileWidth":150}   
+        ,desktopSize ={"birthTop": 225.2,"birthLeft":225,"textTop":225,"textLeft":225,"productTop":116,"productLeft":125,"desktopWidth":225}; 
         
-        imgObject,
-        userText;
         //-----------------------------------------------
-        var alignCount = 0
-        ,fontColCount = 0;
+        // var alignCount = 0
+        // ,fontColCount = 0;
         
         /* zoom locations for mobile and desktop */
-        var mobileSize = {"birthTop": 150,"birthLeft":150,"textTop":150,"textLeft":150,"productTop":40,"productLeft":50};   
-        var desktopSize ={"birthTop": 225.2,"birthLeft":225,"textTop":225,"textLeft":225,"productTop":116,"productLeft":125};  
-        var isMobile = false;
+        // var mobileSize = {"birthTop": 150,"birthLeft":150,"textTop":150,"textLeft":150,"productTop":40,"productLeft":50,"mobileWidth":150};   
+        // var desktopSize ={"birthTop": 225.2,"birthLeft":225,"textTop":225,"textLeft":225,"productTop":116,"productLeft":125,"desktopWidth":225};  
+        // var isMobile = false;
         let init =()=>
         {
             log("Requesting SVG from server! ", version);
@@ -101,10 +112,11 @@
             let h = $(".fontBtn").toArray();
             let j = $(".birthBtn").toArray();
 
-            $(g[0]).click(()=> selectAg());
-            $(g[1]).click(()=>  select9y());
-            $(g[2]).click(()=> select9r());
-
+            // $(g[0]).click(()=> selectAg());
+            // $(g[1]).click(()=>  select9y());
+            // $(g[2]).click(()=> select9r());
+            
+            g.map((el,i)=> $(el).click(()=> {let x= (i > imgTypes.length) ? 0 : i; imgIndex = x; loadImageFromURL(imgTypes[x]);}));
             h.map((el,i)=> $(el).click(()=> activeFontSwap(i)));
             j.map((el,i)=> $(el).click(()=> loadBirthFromURL(el.id)));
 
@@ -112,6 +124,7 @@
            
         const activeFontSwap = (num)=>
         {
+            console.log("activeFontSwap",num);
             let s = (canvas.getActiveObject()) ? canvas.getActiveObject() : addText(num);
             s.set({fontFamily:fontChanger(num).font,fontSize:fontChanger(num).fontSize});
             canvas.discardActiveObject().renderAll();
@@ -452,22 +465,22 @@
                 {font:"z_english",fontSize:9}][a];
         };
         
-        const selectAg=()=>
-        {
-            imgIndex = 0;
-            loadImageFromURL(imgTypes[0]);
-        };
-        const select9y=()=>
-        {
-            imgIndex = 1;
-            loadImageFromURL(imgTypes[1]);
-        };
+        // const selectAg=()=>
+        // {
+        //     imgIndex = 0;
+        //     loadImageFromURL(imgTypes[0]);
+        // };
+        // const select9y=()=>
+        // {
+        //     imgIndex = 1;
+        //     loadImageFromURL(imgTypes[1]);
+        // };
 
-        const select9r=()=>
-        {
-            imgIndex = 2;
-            loadImageFromURL(imgTypes[2]);
-        };
+        // const select9r=()=>
+        // {
+        //     imgIndex = 2;
+        //     loadImageFromURL(imgTypes[2]);
+        // };
 
         const objectExit = (obj) => {
             obj.on('mouseout', function(event) {
