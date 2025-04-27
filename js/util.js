@@ -15,7 +15,12 @@
             let scrollAmount = 0;
             const itemWidth = 60; // Width of each item + margins
             const scrollStep = itemWidth * 3; // Scroll 3 items at a time
-
+            
+            if(emojiItems.length < 5)
+            {
+                prevButton.setAttribute("style", "display:none");
+                nextButton.setAttribute("style", "display:none");
+            }
             // Navigation buttons for this carousel
             if (prevButton) {
                 prevButton.addEventListener('click', function () {

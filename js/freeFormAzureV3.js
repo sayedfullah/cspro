@@ -2,24 +2,22 @@
     {  
         const { warn, log } = console;
         const hostUrl = "https://www.oroafrica.uat2.dev01.cslweb.uk";
-        // const blobUrl = "https://oroblob.blob.core.windows.net/cspro"
-        // var doc, svgString;
+
         const parser = new DOMParser();
         const version = "1.0.0";
         const canvasConfig = {backgroundColor:"#fff",width:"300",height:"300",objectCaching:false,hoverCursor:"pointer",enableRetinaScaling:true};
         const canvas = new fabric.Canvas("canvas",canvasConfig);
-        // var obj, shapeGroup;
-        //-----------------------------------------------
+
         var 
         blobUrl = "https://oroblob.blob.core.windows.net/cspro"
+        ,canvasPng
         ,shapes
         ,doc
         ,svgString
         ,shapeIndexSize = 0
         ,shapeIndex = 0
         ,cam,
-        imgIndex=0
-        ,imgTypes = [`${blobUrl}/images/HRT-AG.png`,`${blobUrl}/images/HRT-9Y.png`,`${blobUrl}/images/HRT-9R.png`,`${blobUrl}/images/HRT-AG.png`]   
+        imgIndex = 0
         ,imgObject
         ,userText
         ,obj
@@ -27,17 +25,15 @@
         ,alignCount = 0
         ,fontColCount = 0
         ,isMobile = false
+        ,accentCount = 0 // use trackAccentCount() if needed
+        ,maxAccent = 2
+        ,imgTypes = [`${blobUrl}/images/HRT-AG.png`,`${blobUrl}/images/HRT-9Y.png`,`${blobUrl}/images/HRT-9R.png`,`${blobUrl}/images/HRT-AG.png`]   
         ,mobileSize = {"birthTop": 150,"birthLeft":150,"textTop":150,"textLeft":150,"productTop":40,"productLeft":50,"mobileWidth":150}   
-        ,desktopSize ={"birthTop": 225.2,"birthLeft":225,"textTop":225,"textLeft":225,"productTop":116,"productLeft":125,"desktopWidth":225}; 
+        ,desktopSize ={"birthTop": 225.2,"birthLeft":225,"textTop":225,"textLeft":225,"productTop":116,"productLeft":125,"desktopWidth":225}
+        ,birthTypes = ["DIAMOND","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"].map((n)=>`${blobUrl}/accents/A${n}.png`)
+        ,supportedFonts = [{font:"z_corsiva",fontSize:8}, {font:"z_boli",fontSize:8}, {font:"z_swan",fontSize:18}, {font:"z_chaparrals",fontSize:8}, {font:"z_english",fontSize:9}];
+
         
-        //-----------------------------------------------
-        // var alignCount = 0
-        // ,fontColCount = 0;
-        
-        /* zoom locations for mobile and desktop */
-        // var mobileSize = {"birthTop": 150,"birthLeft":150,"textTop":150,"textLeft":150,"productTop":40,"productLeft":50,"mobileWidth":150};   
-        // var desktopSize ={"birthTop": 225.2,"birthLeft":225,"textTop":225,"textLeft":225,"productTop":116,"productLeft":125,"desktopWidth":225};  
-        // var isMobile = false;
         let init =()=>
         {
             log("Requesting SVG from server! ", version);
@@ -89,20 +85,21 @@
                 fill:"#000"
                 ,originX:"center"
                 ,originY:"center"
-                ,left: (isMobile) ? mobileSize.textLeft : desktopSize.textLeft //150 //225
+                ,left: (isMobile) ? mobileSize.textLeft : desktopSize.textLeft 
                 ,objectCaching:false
                 ,textAlign:"center"
-                ,top: (isMobile) ? mobileSize.textTop : desktopSize.textTop //150 //225
+                ,top: (isMobile) ? mobileSize.textTop : desktopSize.textTop
                 ,fontSize:fontChanger(fontColCount).fontSize
                 ,padding:50
                 ,fontFamily:fontChanger(fontColCount).font
             };
+
             userText = new fabric.IText("Click to edit",props);
             
             canvas.add(userText);
             userText.bringToFront();
-            // canvas.moveTo(userText, 2);
             canvas.renderAll();
+            return userText;
         };
     
       
@@ -111,14 +108,10 @@
             let g = $(".canvasBtn").toArray();
             let h = $(".fontBtn").toArray();
             let j = $(".birthBtn").toArray();
-
-            // $(g[0]).click(()=> selectAg());
-            // $(g[1]).click(()=>  select9y());
-            // $(g[2]).click(()=> select9r());
             
             g.map((el,i)=> $(el).click(()=> {let x= (i > imgTypes.length) ? 0 : i; imgIndex = x; loadImageFromURL(imgTypes[x]);}));
             h.map((el,i)=> $(el).click(()=> activeFontSwap(i)));
-            j.map((el,i)=> $(el).click(()=> loadBirthFromURL(el.id)));
+            j.map((el,i)=> $(el).click(()=> {(trackAccents("accent") < maxAccent) ? loadBirthFromURL(el.id): null}));
 
         };
            
@@ -171,7 +164,6 @@
                         let s = canvas.getActiveObject();
                         fontColCount++;
                         s.set({fontFamily:fontChanger(fontColCount).font,fontSize:fontChanger(fontColCount).fontSize});
-                        // fontColCount++;
                         canvas.discardActiveObject().renderAll();
                         canvas.setActiveObject(s);
                     }
@@ -208,7 +200,7 @@
         {
             const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             isMobile = isMobileDevice;
-            console.log("mobile device detected: ",isMobileDevice);
+            // console.log("mobile device detected: ",isMobileDevice);
             if (!isMobileDevice)
             {
                 
@@ -226,8 +218,6 @@
         
         const scaleCanvasDown=()=>
         {
-            //optional method
-            //deviceZoom
             canvas.setWidth(300);
             canvas.setHeight(300);
         };
@@ -264,22 +254,18 @@
             fabric.Image.fromURL(imageUrl, function(img) {
                 img.scaleToWidth(200);
                 img.set({
-                    // left: 125, //125
-                    // top: 116,//40, //116
-                    left: (isMobile) ?  mobileSize.productLeft : desktopSize.productLeft, //50, //125
-                    top: (isMobile) ? mobileSize.productTop : desktopSize.productTop,//40, //116
+                    left: (isMobile) ?  mobileSize.productLeft : desktopSize.productLeft, 
+                    top: (isMobile) ? mobileSize.productTop : desktopSize.productTop,
                     angle: 0,
                     selectable: true,
-                    
+                    customId: `${imageUrl}-${Date.now()}`,
+                    classType: "sketch",
+                    crossOrigin: 'anonymous'
                 });
+               
+                if (imgObject) { canvas.remove(imgObject); } // Remove previous image if it exists
         
-                // Remove previous image if it exists
-                if (imgObject) {
-                    canvas.remove(imgObject);
-                }
-        
-                // Add the new image to the canvas
-                img.selectable = false;
+                img.selectable = false; // Add the new image to the canvas
                   
                 canvas.add(img);
                 canvas.moveTo(img, 1);
@@ -287,52 +273,28 @@
                 objectExit(img);
                 imgObject = img; // Keep reference to the current image
                 
-            });
+            }, { crossOrigin: 'anonymous' });
         };
 
         const loadBirthFromURL = (imageUrl) => {
-            let birthTypes = ["DIAMOND","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]
-                            .map((n)=>`${blobUrl}/accents/A${n}.png`);
             let _birthStone = birthTypes.find(url => url.includes(imageUrl));
-            
             const rndLeft = Math.floor(Math.random() * 21);
-           
+        //    log("accent name: ",_birthStone.endsWith("DIAMOND.png"));
             fabric.Image.fromURL(_birthStone, function(img) {
                 img.scaleToWidth(8.6);
                 img.set({
-                    left: (isMobile) ? mobileSize.birthLeft + rndLeft : desktopSize.birthLeft + rndLeft, //150 + rndLeft, //225
-                    top: (isMobile) ? mobileSize.birthTop : desktopSize.birthTop, //150, //225.2
+                    left: (isMobile) ? mobileSize.birthLeft + rndLeft : desktopSize.birthLeft + rndLeft, 
+                    top: (isMobile) ? mobileSize.birthTop : desktopSize.birthTop, 
                     angle: 0,
                     selectable: true,
                     lockScalingX: true,  
                     lockScalingY: true,
-                    lockScaling: true 
+                    lockScaling: true,
+                    classType: 'accent', 
+                    customId: `${_birthStone}-${Date.now()}`,
+                    crossOrigin: 'anonymous'
                 });
 
-                    const circle = new fabric.Circle({
-                    radius: 3.9, 
-                    fill: 'rgba(0,0,255,01)', 
-                    stroke: 'rgba(0,0,0,0.3)', 
-                    strokeWidth: 0,
-                    left: 225.3, 
-                    top: 225.5, 
-                    selectable: false
-                });
-        
-                /* fix group delete */
-                // Create a group with the image and circle
-                // const group = new fabric.Group([circle,img], {
-                //     left: 225 + rndLeft,
-                //     top: 225,
-                //     selectable: true
-                // });
-
-                // group.set({
-                //     borderColor: '#efefef',
-                //     cornerColor: 'green',
-                //     cornerSize: 20,
-                //     transparentCorners: false
-                // });
 
                 // More granular control over which handles are visible
                 img.setControlsVisibility({
@@ -347,16 +309,57 @@
                     mtr: true  
                 });
 
-                // Add the new image to the canvas
-                canvas.add(img); 
+                
+                canvas.add(img); // Add the new image to the canvas
+                // canvas
                 // canvas.add(circle); 
                 canvas.bringToFront();
                 canvas.renderAll();
+                trackAccents("accent"); //update accent count
+               
+                // accentCount++;
                 // objectExit(group);
 
-            });
+            }, { crossOrigin: 'anonymous' });
         };
         
+        const addCirclesToBirthstones = (className) => {
+            const images = canvas.getObjects().filter(obj => obj.classType === className);
+            images.forEach(obj => {
+                // log(" ************* ",obj.customId.includes("DIAMOND"));
+                const birth = new fabric.Circle({
+                    radius: 3.9, 
+                    fill: 'rgba(0,0,255,01)', 
+                    stroke: 'rgba(0,0,0,0.3)', 
+                    strokeWidth: 0,
+                    left: obj.left, 
+                    top: obj.top, 
+                    selectable: true
+                });
+                // log("addd birth: ",images.length);
+                const dia = new fabric.Circle({
+                    radius: 2.7, 
+                    fill: 'rgba(255,255,255,0)', 
+                    stroke: 'rgba(0,0,0,1)', 
+                    strokeWidth: 0.25,
+                    left: obj.left+1.5, 
+                    top: obj.top+1.5, 
+                    selectable: true
+                });
+                canvas.add((obj.customId.includes("DIAMOND")) ? dia : birth);
+                canvas.moveTo((obj.customId.includes("DIAMOND")) ? dia : birth, 1);
+                canvas.renderAll();
+            })
+            console.log((images.length === 0) ? `Accent: ${className} not added` : `Accent': ${className} added`);
+        };
+
+        const trackAccents = (className)=> 
+        {
+            const images = canvas.getObjects().filter(obj => obj.classType === className);
+            console.log((images.length === 0) ? `Class 'accent': ${className} not found` : `Class 'accent': ${className} found`);
+            return images.length;
+        }
+
         const getCanvas=()=>
         {
             scaleCanvasDown();
@@ -384,29 +387,17 @@
                 canvas.discardActiveObject();
                 canvas.renderAll();
         
-                let dim = 2000; // Image resolution
-                let tmpCanvas = document.createElement("canvas");
-                tmpCanvas.width = dim;
-                tmpCanvas.height = dim;
-                let ctx = tmpCanvas.getContext("2d");
+                var dataURL = canvas.toDataURL({
+                    format: 'png',
+                    quality: 1.0
+                  });
+                 
+                  var link = document.createElement('a'); // Trigger the download
+                  link.href = dataURL;
+                  link.download = 'canvas.png'; // Name of the downloaded file
+                  link.click();
         
-                let svgData = canvas.toSVG();
-                let img = new Image();
-                img.crossOrigin = "anonymous";
-                img.onload = () => {
-                    ctx.drawImage(img, 0, 0, dim, dim);
-        
-                    // Now trigger the download
-                    let download = document.createElement("a");
-                    download.href = tmpCanvas.toDataURL("image/png", 1.0);
-                    download.download = document.title + ".png";
-                    document.body.appendChild(download);
-                    download.click();
-                    document.body.removeChild(download);
-                };
-        
-                // Encode SVG to avoid parsing issues
-                img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgData);
+                canvasPng = dataURL; // Encode SVG to avoid parsing issues
             });
         };
         
@@ -457,30 +448,8 @@
         
         const fontChanger=(a)=> 
         {
-            return [
-                {font:"z_corsiva",fontSize:8},
-                {font:"z_boli",fontSize:8},
-                {font:"z_swan",fontSize:18},
-                {font:"z_chaparrals",fontSize:8},
-                {font:"z_english",fontSize:9}][a];
+            return supportedFonts[a];
         };
-        
-        // const selectAg=()=>
-        // {
-        //     imgIndex = 0;
-        //     loadImageFromURL(imgTypes[0]);
-        // };
-        // const select9y=()=>
-        // {
-        //     imgIndex = 1;
-        //     loadImageFromURL(imgTypes[1]);
-        // };
-
-        // const select9r=()=>
-        // {
-        //     imgIndex = 2;
-        //     loadImageFromURL(imgTypes[2]);
-        // };
 
         const objectExit = (obj) => {
             obj.on('mouseout', function(event) {
@@ -495,13 +464,13 @@
         {
             $(document).on("click","#_order",()=> 
             { 
-                log("serialize: ", getCanvas(doc));
+                addCirclesToBirthstones("accent");
+                // log("serialize: ", getCanvas(doc));
                 const x = parser.parseFromString(getCanvas(doc),"image/svg+xml");
                 const svgExport = svgDown(x);
                 const blob = new Blob([svgExport], { type: "image/svg+xml" });
                 // Create an object URL
                 const url = URL.createObjectURL(blob);
-                
                 // Create a temporary anchor element
                 const a = document.createElement("a");
                 a.href = url;
@@ -610,7 +579,6 @@
             }
         });
         
-
         const render=(()=>
         {
             init();
