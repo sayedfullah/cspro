@@ -1,47 +1,54 @@
 (()=>
     {  
         const { warn, log } = console;
-        const hostUrl = "https://www.oroafrica.uat2.dev01.cslweb.uk";
+        // const hostUrl = "https://www.oroafrica.uat2.dev01.cslweb.uk";
+        // const parser = new DOMParser();
+        // const version = "1.0.0";
+        // const canvasConfig = {backgroundColor:"#fff",width:"300",height:"300",objectCaching:false,hoverCursor:"pointer",enableRetinaScaling:true};
+        // const canvas = new fabric.Canvas("canvas",canvasConfig);
+        // const productId = (document.querySelector(".productId")) ? document.querySelector(".productId") : "HRT";
 
-        const parser = new DOMParser();
-        const version = "1.0.0";
-        const canvasConfig = {backgroundColor:"#fff",width:"300",height:"300",objectCaching:false,hoverCursor:"pointer",enableRetinaScaling:true};
-        const canvas = new fabric.Canvas("canvas",canvasConfig);
-
+        // ,productImages = [`${blobUrl}/images/${productId}-AG.png`,`${blobUrl}/images/${productId}-9Y.png`,`${blobUrl}/images/${productId}-9R.png`,`${blobUrl}/images/${productId}-AG.png`]   
+        /* convert to config object */
         var 
-        blobUrl = "https://oroblob.blob.core.windows.net/cspro"
-        ,canvasPng
-        ,shapes
-        ,doc
-        ,svgString
-        ,shapeIndexSize = 0
-        ,shapeIndex = 0
-        ,cam,
-        imgIndex = 0
-        ,imgObject
-        ,userText
-        ,obj
-        ,shapeGroup
-        ,alignCount = 0
-        ,fontColCount = 0
-        ,isMobile = false
+        parser = new DOMParser() // global domparser
+        ,blobUrl = "https://oroblob.blob.core.windows.net/cspro" // global host
+        ,productDirectory = ["/images","/accents","/ico"] //fonts is loaded via css @fontface
+        ,version = "1.0.0" // versioning
+        ,canvasConfig = {backgroundColor:"#fff",width:"300",height:"300",objectCaching:false,hoverCursor:"pointer",enableRetinaScaling:true} // fabricjs canvas config
+        ,canvas = new fabric.Canvas("canvas",canvasConfig) //fabricj canvas
+        ,productId = (document.querySelector(".productId")) ? document.querySelector(".productId") : "HRT" // product id detector
+        ,canvasPng //downloaded png dataUrl
+        ,shapes // remote svg elements
+        ,doc // svg string parsed to xml
+        ,svgString // newly created svg with host elements imported
+        ,shapeIndexSize = 0 // total svg elements in parent
+        ,shapeIndex = 0 // svg shape loaded if more than one in svg parent
+        ,cam // cam post-processing stored for export
+        ,imgIndex = 0 // state/position of product image array
+        ,imgObject // test if needed <user text object>
+        ,userText // test if needed<user text object>
+        ,obj // primary svg loaded
+        ,shapeGroup // test if needed<user text object>
+        ,alignCount = 0 // alignment of text position
+        ,fontColCount = 0 // index handler for font swapping on fabricjs control element
+        ,isMobile = false // test for moible and adjust canvas size
         ,accentCount = 0 // use trackAccentCount() if needed
-        ,maxAccent = 2
-        ,imgTypes = [`${blobUrl}/images/HRT-AG.png`,`${blobUrl}/images/HRT-9Y.png`,`${blobUrl}/images/HRT-9R.png`,`${blobUrl}/images/HRT-AG.png`]   
-        ,mobileSize = {"birthTop": 150,"birthLeft":150,"textTop":150,"textLeft":150,"productTop":40,"productLeft":50,"mobileWidth":150}   
-        ,desktopSize ={"birthTop": 225.2,"birthLeft":225,"textTop":225,"textLeft":225,"productTop":116,"productLeft":125,"desktopWidth":225}
-        ,birthTypes = ["DIAMOND","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"].map((n)=>`${blobUrl}/accents/A${n}.png`)
+        ,maxAccent = 2  // max accents allowed
+        ,productImages = ['AG', '9Y', '9R', 'AG'].map(suffix => `${blobUrl}${productDirectory[0]}/${productId}-${suffix}.png`) // product images per alloy/metal
+        ,mobileSize = {"birthTop": 150,"birthLeft":150,"textTop":150,"textLeft":150,"productTop":40,"productLeft":50,"mobileWidth":150}   // required for mobile/desktop switching
+        ,desktopSize ={"birthTop": 225.2,"birthLeft":225,"textTop":225,"textLeft":225,"productTop":116,"productLeft":125,"desktopWidth":225} // required for mobile/desktop switching
+        ,birthTypes = ["DIAMOND","JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"].map((n)=>`${blobUrl}${productDirectory[1]}/A${n}.png`) // accent types
         ,supportedFonts = [{font:"z_corsiva",fontSize:8}, {font:"z_boli",fontSize:8}, {font:"z_swan",fontSize:18}, {font:"z_chaparrals",fontSize:8}, {font:"z_english",fontSize:9}];
 
         
         let init =()=>
         {
-            log("Requesting SVG from server! ", version);
             // fetch(`/images/prism/svg/sketch.txt`,{ mode: 'no-cors' })
             // fetch(`/images/prism/svg/sketch.txt`,{ mode: 'no-cors' })
-            const productElement = document.querySelector(".productId");
-            const _sourceSVG = (productElement !== null) ? productElement : "HRT";
-            console.log("Product: ",_sourceSVG)
+            
+            const _sourceSVG = (productId !== null) ? productId : "HRT";
+
             fetch(`${blobUrl}/svg/${_sourceSVG}.svg`)
             .then(resp=> resp.text())
             .then(data=> 
@@ -57,7 +64,7 @@
                 //add svg children to new svg
                 svg.appendChild(impi);
 
-                loadImageFromURL(imgTypes[imgIndex]);
+                loadImageFromURL(productImages[imgIndex]);
 
                 svgString = new XMLSerializer().serializeToString(svg);
 
@@ -109,15 +116,13 @@
             let h = $(".fontBtn").toArray();
             let j = $(".birthBtn").toArray();
             
-            g.map((el,i)=> $(el).click(()=> {let x= (i > imgTypes.length) ? 0 : i; imgIndex = x; loadImageFromURL(imgTypes[x]);}));
+            g.map((el,i)=> $(el).click(()=> {let x= (i > productImages.length) ? 0 : i; imgIndex = x; loadImageFromURL(productImages[x]);}));
             h.map((el,i)=> $(el).click(()=> activeFontSwap(i)));
             j.map((el,i)=> $(el).click(()=> {(trackAccents("accent") < maxAccent) ? loadBirthFromURL(el.id): null}));
-
         };
            
         const activeFontSwap = (num)=>
         {
-            console.log("activeFontSwap",num);
             let s = (canvas.getActiveObject()) ? canvas.getActiveObject() : addText(num);
             s.set({fontFamily:fontChanger(num).font,fontSize:fontChanger(num).fontSize});
             canvas.discardActiveObject().renderAll();
@@ -135,15 +140,15 @@
                             cornerBackgroundColor: '#efefef',
                             cornerPadding:7
                     }
-                    ,tl:{icon: `${blobUrl}/ico/delete.svg`,cornerColor:"red"}
-                    ,tr:{icon: `${blobUrl}/ico/scale.svg`}
+                    ,tl:{icon: `${blobUrl}${productDirectory[2]}/delete.svg`,cornerColor:"red"}
+                    ,tr:{icon: `${blobUrl}${productDirectory[2]}/scale.svg`}
                     ,ml:{}
                     ,mr:{}
                     ,mt:{}
-                    ,mb:{icon: `${blobUrl}/ico/align.svg`}
+                    ,mb:{icon: `${blobUrl}${productDirectory[2]}/align.svg`}
                     ,bl:{}
-                    ,br:{icon:`${blobUrl}/ico/font.svg`}
-                    ,mtr:{icon: `${blobUrl}/ico/rotate.svg`}
+                    ,br:{icon:`${blobUrl}${productDirectory[2]}/font.svg`}
+                    ,mtr:{icon: `${blobUrl}${productDirectory[2]}/rotate.svg`}
             });
     
             fabric.Canvas.prototype.customiseControls({
@@ -200,10 +205,8 @@
         {
             const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             isMobile = isMobileDevice;
-            // console.log("mobile device detected: ",isMobileDevice);
             if (!isMobileDevice)
             {
-                
                 canvas.setWidth(450);
                 canvas.setHeight(450);
                 canvas.zoomToPoint(new fabric.Point(225, 225), 3);
@@ -234,7 +237,6 @@
             opt.e.preventDefault();
             opt.e.stopPropagation();
             });
-            
         };
         const textAlignment=(a)=>
         {
@@ -279,7 +281,6 @@
         const loadBirthFromURL = (imageUrl) => {
             let _birthStone = birthTypes.find(url => url.includes(imageUrl));
             const rndLeft = Math.floor(Math.random() * 21);
-        //    log("accent name: ",_birthStone.endsWith("DIAMOND.png"));
             fabric.Image.fromURL(_birthStone, function(img) {
                 img.scaleToWidth(8.6);
                 img.set({
@@ -295,7 +296,6 @@
                     crossOrigin: 'anonymous'
                 });
 
-
                 // More granular control over which handles are visible
                 img.setControlsVisibility({
                     mt: false, 
@@ -308,26 +308,18 @@
                     tr: false, 
                     mtr: true  
                 });
-
                 
                 canvas.add(img); // Add the new image to the canvas
-                // canvas
-                // canvas.add(circle); 
                 canvas.bringToFront();
                 canvas.renderAll();
                 trackAccents("accent"); //update accent count
-               
-                // accentCount++;
-                // objectExit(group);
-
             }, { crossOrigin: 'anonymous' });
         };
         
         const addCirclesToBirthstones = (className) => {
             const images = canvas.getObjects().filter(obj => obj.classType === className);
             images.forEach(obj => {
-                // log(" ************* ",obj.customId.includes("DIAMOND"));
-                const birth = new fabric.Circle({
+                    const birth = new fabric.Circle({
                     radius: 3.9, 
                     fill: 'rgba(0,0,255,01)', 
                     stroke: 'rgba(0,0,0,0.3)', 
@@ -336,7 +328,6 @@
                     top: obj.top, 
                     selectable: true
                 });
-                // log("addd birth: ",images.length);
                 const dia = new fabric.Circle({
                     radius: 2.7, 
                     fill: 'rgba(255,255,255,0)', 
@@ -459,13 +450,21 @@
                 }
             });
         }
+        const setLocalStorage = (key, value) => {
+            localStorage.setItem(key, JSON.stringify(value));
+          };
+          
+          // Get item from localStorage
+        const getLocalStorage = (key) => {
+            const item = localStorage.getItem(key);
+            return item ? JSON.parse(item) : null;
+          };
         //------------------------END HELPER FUNCTIONS----------------------------->
         const serialize=()=>
         {
             $(document).on("click","#_order",()=> 
             { 
                 addCirclesToBirthstones("accent");
-                // log("serialize: ", getCanvas(doc));
                 const x = parser.parseFromString(getCanvas(doc),"image/svg+xml");
                 const svgExport = svgDown(x);
                 const blob = new Blob([svgExport], { type: "image/svg+xml" });
@@ -581,6 +580,7 @@
         
         const render=(()=>
         {
+            setLocalStorage(productId,{"debug":false,"version":version,stamp:Date.now()});
             init();
             actionButtons();
             zoomCanvas();

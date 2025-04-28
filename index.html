@@ -155,56 +155,7 @@
 	<script type="text/javascript" src="./js/freeFormAzureV3.js" defer=""></script>
 	<script type="text/javascript" src="./js/util.js" defer=""></script>
 	<!-- <script type="text/javascript" src="./js/loadCsPro.js" defer=""></script>-->
-	<!-- <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Generic function to initialize a carousel
-            function initCarousel(containerId) {
-                const container = document.getElementById(containerId);
-                if (!container) return;
 
-                const emojiList = container.querySelector('.emoji-list');
-                const emojiItems = container.querySelectorAll('.emoji-item');
-                const prevButton = container.querySelector('.nav-prev');
-                const nextButton = container.querySelector('.nav-next');
-                const carousel = container.querySelector('.emoji-carousel');
-
-                let scrollAmount = 0;
-                const itemWidth = 60; // Width of each item + margins
-                const scrollStep = itemWidth * 3; // Scroll 3 items at a time
-
-                // Navigation buttons for this carousel
-                if (prevButton) {
-                    prevButton.addEventListener('click', function () {
-                        scrollAmount = Math.max(scrollAmount - scrollStep, 0);
-                        emojiList.style.transform = `translateX(-${scrollAmount}px)`;
-                    });
-                }
-
-                if (nextButton) {
-                    nextButton.addEventListener('click', function () {
-                        const maxScroll = emojiList.scrollWidth - carousel.clientWidth;
-                        scrollAmount = Math.min(scrollAmount + scrollStep, maxScroll);
-                        emojiList.style.transform = `translateX(-${scrollAmount}px)`;
-                    });
-                }
-
-                // Return methods that can be used externally
-                return {
-                    scrollLeft: function () {
-                        if (prevButton) prevButton.click();
-                    },
-                    scrollRight: function () {
-                        if (nextButton) nextButton.click();
-                    }
-                };
-            }
-
-            // Initialize all carousels
-            const carousel1 = initCarousel('emoji-carousel-1');
-            const carousel2 = initCarousel('emoji-carousel-2');
-            const carousel3 = initCarousel('emoji-carousel-3');
-        });
-    </script> -->
 </body>
 
 </html>
